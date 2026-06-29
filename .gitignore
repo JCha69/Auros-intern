@@ -1,0 +1,5 @@
+auto_watch.py
+github_push.py
+*.env
+.DS_Store
+.obsidian/
