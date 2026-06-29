@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3D 집적화를 위한 웨이퍼-투-웨이퍼 하이브리드 본딩의 고도화된 오버레이 계측 | 논문 번역</title>
+<style>
+  :root {
+    --ink: #1a1a1a;
+    --ink-mid: #3d3d3d;
+    --ink-soft: #666;
+    --ink-faint: #999;
+    --paper: #fafaf8;
+    --surface: #f4f3ef;
+    --rule: #d8d6cf;
+    --accent: #1a4a7a;
+    --accent-light: #e8f0f8;
+    --highlight-yellow: rgba(255, 210, 0, 0.22);
+    --highlight-blue: rgba(26, 74, 122, 0.10);
+    --eq-border: #1a4a7a;
+    --transcript-bg: #f0f4f8;
+    --fig-bg: #f0efe9;
+    --term-color: #1a4a7a;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Serif KR', 'Georgia', 'Batang', serif;
+    font-size: 14.5px;
+    line-height: 1.88;
+    color: var(--ink);
+    background: var(--paper);
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 48px 56px 80px;
+  }
+
+  /* ── Header ── */
+  .paper-header {
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 20px;
+    margin-bottom: 10px;
+  }
+  .paper-award {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 14px;
+    font-weight: 600;
+  }
+  .paper-title-en {
+    font-family: 'Georgia', serif;
+    font-size: 11px;
+    color: var(--ink-soft);
+    margin-bottom: 8px;
+    font-style: italic;
+  }
+  .paper-title-ko {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.4;
+    color: var(--ink);
+    margin-bottom: 18px;
+  }
+  .paper-meta {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 12.5px;
+    color: var(--ink-mid);
+    line-height: 1.7;
+  }
+  .paper-meta .authors { font-weight: 600; margin-bottom: 3px; }
+  .paper-meta .affil { color: var(--ink-soft); }
+  .paper-meta .source {
+    margin-top: 10px;
+    padding: 6px 12px;
+    background: var(--accent-light);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 4px 4px 0;
+    display: inline-block;
+    font-size: 11.5px;
+    color: var(--accent);
+  }
+
+  /* ── Translation note ── */
+  .translation-note {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 11.5px;
+    color: var(--ink-soft);
+    padding: 10px 14px;
+    background: var(--surface);
+    border-radius: 4px;
+    margin: 16px 0 0;
+    line-height: 1.6;
+  }
+
+  /* ── TOC ── */
+  .toc {
+    background: var(--surface);
+    border: 0.5px solid var(--rule);
+    border-radius: 6px;
+    padding: 18px 22px;
+    margin: 32px 0;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 13px;
+  }
+  .toc-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 10px;
+  }
+  .toc ol { padding-left: 18px; }
+  .toc li { margin-bottom: 4px; }
+  .toc a { color: var(--accent); text-decoration: none; }
+  .toc a:hover { text-decoration: underline; }
+  .toc ol ol { margin-top: 4px; font-size: 12px; color: var(--ink-mid); }
+
+  /* ── Sections ── */
+  .section { margin-top: 40px; }
+  .section-label {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 6px;
+  }
+  h2 {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--ink);
+    border-bottom: 1.5px solid var(--ink);
+    padding-bottom: 6px;
+    margin-bottom: 16px;
+  }
+  h3 {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 14.5px;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 26px 0 10px;
+  }
+  h3::before {
+    content: '';
+    display: inline-block;
+    width: 4px;
+    height: 14px;
+    background: var(--accent);
+    margin-right: 8px;
+    vertical-align: -2px;
+    border-radius: 1px;
+  }
+  p {
+    margin-bottom: 14px;
+    text-align: justify;
+    word-break: keep-all;
+  }
+
+  /* ── Bilingual terms ── */
+  .term {
+    font-weight: 700;
+    color: var(--term-color);
+  }
+  .term-en {
+    font-family: 'Georgia', serif;
+    font-size: 0.86em;
+    color: var(--ink-soft);
+    font-style: italic;
+    margin-left: 3px;
+  }
+  .hl-yellow { background: var(--highlight-yellow); padding: 1px 2px; border-radius: 2px; }
+  .hl-blue { background: var(--highlight-blue); padding: 1px 3px; border-radius: 2px; }
+  strong { font-weight: 700; color: var(--ink); }
+
+  /* ── Abstract box ── */
+  .abstract-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 18px 22px;
+    margin: 20px 0;
+    border-radius: 0 6px 6px 0;
+  }
+  .abstract-box .abs-label {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+  .abstract-box p { margin-bottom: 10px; font-size: 13.5px; }
+  .keywords {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 12px;
+    color: var(--ink-mid);
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 0.5px solid var(--rule);
+  }
+  .keywords strong { color: var(--accent); }
+
+  /* ── Figures ── */
+  .fig-wrap {
+    margin: 28px 0;
+    border: 0.5px solid var(--rule);
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--fig-bg);
+  }
+  .fig-img-area {
+    background: var(--fig-bg);
+    min-height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
+    padding: 24px 16px;
+    border-bottom: 0.5px solid var(--rule);
+  }
+  .fig-img-area .fig-icon {
+    font-size: 32px;
+    opacity: 0.35;
+  }
+  .fig-img-area .fig-orig-label {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 11.5px;
+    color: var(--ink-soft);
+    font-style: italic;
+  }
+  .fig-desc-area {
+    padding: 14px 18px 16px;
+  }
+  .fig-num {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 5px;
+    letter-spacing: 0.03em;
+  }
+  .fig-caption-ko {
+    font-size: 13px;
+    color: var(--ink-mid);
+    line-height: 1.7;
+    margin-bottom: 10px;
+  }
+  .fig-explain {
+    background: white;
+    border: 0.5px solid var(--rule);
+    border-radius: 6px;
+    padding: 10px 14px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 12.5px;
+    color: var(--ink-mid);
+    line-height: 1.7;
+  }
+  .fig-explain-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 5px;
+  }
+
+  /* ── Tables ── */
+  .table-wrap {
+    margin: 24px 0;
+    overflow-x: auto;
+  }
+  .table-num {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+  table.paper-tbl {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 13px;
+  }
+  table.paper-tbl th {
+    background: var(--ink);
+    color: white;
+    padding: 8px 14px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 12px;
+  }
+  table.paper-tbl td {
+    padding: 7px 14px;
+    border-bottom: 0.5px solid var(--rule);
+    color: var(--ink-mid);
+  }
+  table.paper-tbl tr:last-child td { border-bottom: none; }
+  table.paper-tbl tr:nth-child(even) td { background: var(--surface); }
+  .tbl-caption {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-top: 6px;
+    font-style: italic;
+  }
+
+  /* ── Equations ── */
+  .eq-wrap {
+    margin: 22px 0;
+    padding: 16px 20px;
+    background: var(--surface);
+    border-left: 3.5px solid var(--eq-border);
+    border-radius: 0 6px 6px 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+  }
+  .eq-content { flex: 1; }
+  .eq-math {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    font-size: 15px;
+    color: var(--ink);
+    margin-bottom: 10px;
+    letter-spacing: 0.02em;
+  }
+  .eq-vars {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 12px;
+    color: var(--ink-soft);
+    line-height: 1.7;
+  }
+  .eq-vars span { font-style: italic; font-family: 'Georgia', serif; color: var(--ink-mid); }
+  .eq-num {
+    font-family: 'Georgia', serif;
+    font-size: 13px;
+    color: var(--ink-soft);
+    white-space: nowrap;
+    padding-top: 2px;
+  }
+
+  /* ── Key results callout ── */
+  .result-box {
+    border: 1.5px solid var(--accent);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 20px 0;
+    background: var(--accent-light);
+  }
+  .result-box-label {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  .result-box ul {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 13.5px;
+    padding-left: 18px;
+    color: var(--ink-mid);
+    line-height: 1.8;
+  }
+  .result-box ul li { margin-bottom: 4px; }
+
+  /* ── References ── */
+  .ref-list {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 12px;
+    color: var(--ink-mid);
+    line-height: 1.7;
+    padding-left: 0;
+    list-style: none;
+  }
+  .ref-list li {
+    padding-left: 28px;
+    text-indent: -28px;
+    margin-bottom: 8px;
+  }
+
+  /* ── Footer ── */
+  .paper-footer {
+    margin-top: 60px;
+    padding-top: 16px;
+    border-top: 1.5px solid var(--ink);
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 11px;
+    color: var(--ink-soft);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  @media print {
+    body { padding: 20px 30px; }
+    .fig-wrap { break-inside: avoid; }
+    .eq-wrap { break-inside: avoid; }
+  }
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700&family=Noto+Serif+KR:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════
+     HEADER
+═══════════════════════════════════════════ -->
+<header class="paper-header">
+  <div class="paper-award">🏆 Karel Urbánek Best Student Paper Award · SPIE Proc. Vol. 13981, 2026</div>
+  <div class="paper-title-en">Advanced overlay metrology for wafer-to-wafer hybrid bonding in 3D integration</div>
+  <h1 class="paper-title-ko">3D 집적화를 위한 웨이퍼-투-웨이퍼 하이브리드 본딩의<br>고도화된 오버레이 계측</h1>
+  <div class="paper-meta">
+    <div class="authors">Pei-Hsuan Lin · Yi-Sha Ku</div>
+    <div class="affil">국립 칭화대학교 반도체 연구 대학 · 산업기술연구원(ITRI) 계측 표준 센터, 신주, 대만</div>
+    <div class="source">Metrology, Inspection, and Process Control XL · DOI: 10.1117/12.3090515</div>
+  </div>
+  <div class="translation-note">
+    ※ 이 문서는 원문(영어) 논문의 한국어 번역 요약본입니다. 중요 기술 용어는 <strong class="term">한국어 (English)</strong> 형식으로 병기하였으며, 핵심 내용은 <span class="hl-yellow">노란색</span>으로, 독자가 주목해야 할 논점은 <span class="hl-blue">파란색</span>으로 강조하였습니다.
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════════════
+     TOC
+═══════════════════════════════════════════ -->
+<nav class="toc">
+  <div class="toc-title">목차 (Table of Contents)</div>
+  <ol>
+    <li><a href="#abstract">초록 (Abstract)</a></li>
+    <li><a href="#intro">서론 (Introduction)</a></li>
+    <li><a href="#method">방법론 (Methodology)</a>
+      <ol>
+        <li><a href="#m1">광학 이미징 시스템</a></li>
+        <li><a href="#m2">샘플</a></li>
+        <li><a href="#m3">제안 알고리즘 — 엣지 기반 vs. SGC</a></li>
+        <li><a href="#m4">프린지 반사 방법</a></li>
+        <li><a href="#m5">딥러닝 기반 이미지 복원 모델</a></li>
+      </ol>
+    </li>
+    <li><a href="#results">결과 (Results)</a>
+      <ol>
+        <li><a href="#r1">총 측정 불확도 (TMU)</a></li>
+        <li><a href="#r2">오버레이 측정 결과</a></li>
+        <li><a href="#r3">오버레이 모델 및 웨이퍼 지형</a></li>
+        <li><a href="#r4">딥러닝 이미지 복원 성능</a></li>
+      </ol>
+    </li>
+    <li><a href="#conclusion">결론 (Conclusions)</a></li>
+    <li><a href="#refs">참고문헌</a></li>
+  </ol>
+</nav>
+
+
+<!-- ═══════════════════════════════════════════
+     ABSTRACT
+═══════════════════════════════════════════ -->
+<section class="section" id="abstract">
+  <h2>초록 (Abstract)</h2>
+  <div class="abstract-box">
+    <div class="abs-label">Abstract · 초록</div>
+    <p>
+      반도체 스케일링이 <span class="term">3D 집적화 <span class="term-en">(3D integration)</span></span>로 전환됨에 따라, <span class="term">하이브리드 본딩 <span class="term-en">(hybrid bonding)</span></span>은 고성능 소자 스태킹을 위한 핵심 공정으로 자리잡았다. 그러나 심각한 <span class="term hl-yellow">웨이퍼 뒤틀림 <span class="term-en">(wafer warpage)</span></span>과 나노미터 수준의 정렬 요구사항은 계측에 큰 도전을 제기한다.
+    </p>
+    <p>
+      본 연구는 강건한 알고리즘, 지형 분석, AI 기반 보정을 통합하여 고안정성·고효율 <span class="term">오버레이 계측 <span class="term-en">(overlay metrology)</span></span> 프레임워크를 제안한다. 구체적으로 세 가지 핵심 기술을 제시한다.
+    </p>
+    <p>
+      ① <span class="term hl-blue">대칭 기반 그레이스케일 상관 알고리즘 <span class="term-en">(Symmetry-based Grayscale Correlation, SGC)</span></span>: 오버레이 정밀도를 크게 향상시키고 측정 불확도를 감소시키면서 공정 변동에 대한 강건성 유지.<br>
+      ② <span class="term">프린지 반사 모듈 <span class="term-en">(Fringe Reflection, FR)</span></span>: 3D 웨이퍼 지형을 포착하여 물리적 변형과 오버레이 핑거프린트를 연결.<br>
+      ③ <span class="term">합성곱 신경망 <span class="term-en">(Convolutional Neural Network, CNN)</span></span>: 초점 이탈(defocus) 이미지를 복원하여 기계적 재초점 없이 정확한 측정 가능, 처리량 대폭 향상.
+    </p>
+    <div class="keywords">
+      <strong>키워드:</strong> 웨이퍼-투-웨이퍼 본딩 (wafer-to-wafer bonding), 본딩 오버레이 (bonding overlay), 오버레이 계측 (overlay metrology), 이미지 기반 오버레이 (image-based overlay)
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     INTRODUCTION
+═══════════════════════════════════════════ -->
+<section class="section" id="intro">
+  <h2>1. 서론 (Introduction)</h2>
+
+  <p>
+    최근 <span class="term">3D 패키징 <span class="term-en">(3D packaging)</span></span>과 <span class="term">후면 전력 전달 네트워크 <span class="term-en">(Backside Power Delivery Network, BSPDN)</span></span> 기술의 급격한 발전으로, 웨이퍼 본딩은 핵심 공정 단계로 확립되었다. 더 높은 <span class="term">인터커넥트 밀도 <span class="term-en">(interconnect density)</span></span>를 달성하기 위해 본드 피치(bond pitch)는 계속 축소되고 있으며, 이에 따라 본딩 오버레이 정확도 요구사항이 점점 더 엄격해지고 있다.
+  </p>
+
+  <div class="result-box">
+    <div class="result-box-label">📌 업계 로드맵 — 핵심 수치</div>
+    <ul>
+      <li>IMEC (2024): <strong>W2W 본딩</strong>이 <span class="hl-yellow">400 nm 본드 피치</span>를 향해 진행 중 → 오버레이 허용 오차 <strong>100 nm</strong> 필요</li>
+      <li>최신 로드맵: <span class="hl-yellow">250 nm 피치</span>로 더욱 강화 → 오버레이 허용 오차 <strong>50 nm</strong></li>
+    </ul>
+  </div>
+
+  <p>
+    본딩된 웨이퍼에서 오버레이 마크는 계면 사이에 매립되어 있다. <span class="term">적외선 <span class="term-en">(Infrared, IR)</span></span> 방사선은 실리콘 웨이퍼(~775 μm)를 투과할 수 있기 때문에, 업계에서는 IR 기반 광학 계측을 사용하여 이 마크를 이미징하는 것이 관행이다.
+  </p>
+
+  <p>
+    전통적인 <span class="term">이미지 기반 알고리즘 <span class="term-en">(image-based algorithm)</span></span>은 <span class="term">엣지 검출 <span class="term-en">(edge detection)</span></span>에 의존하여 임계값으로 마크 경계를 식별하고 중심 변위로부터 오버레이를 계산한다. 이 방법은 직관적이고 비파괴적이지만, <span class="hl-blue">이미지 저하와 정보 손실에 취약</span>하다. 하이브리드 본딩 공정에서는 오버레이 마크가 공정 변동으로 인해 <strong>낮은 대비(low contrast)</strong>와 <strong>왜곡(distortion)</strong>을 보이는 경우가 많아, 이러한 방법이 안정성과 정밀도 유지에 어려움을 겪는다.
+  </p>
+
+  <p>
+    이러한 한계를 극복하기 위해, 본 연구는 <span class="term hl-blue">대칭 기반 그레이스케일 상관(SGC) 알고리즘</span>을 개발하였다. SGC는 특정 엣지에 집중하는 대신, 선택된 영역 내의 전체 그레이스케일 정보를 분석한다.
+  </p>
+
+  <p>
+    IRDS 2024에 따르면, 현재 IR 계측 도구는 본딩된 웨이퍼 쌍에서 <strong>1-시그마 반복성 0.1 μm 미만</strong>을 달성하지만, <span class="term">레일리 기준 <span class="term-en">(Rayleigh criterion)</span></span>의 제약으로 공간 분해능은 약 0.5 μm로 제한된다. 이를 극복하기 위해 <span class="term">서브픽셀 기술 <span class="term-en">(sub-pixel technology)</span></span>을 알고리즘에 통합하여 오버레이 측정 정밀도를 나노미터 수준으로 향상시켰다.
+  </p>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     METHODOLOGY
+═══════════════════════════════════════════ -->
+<section class="section" id="method">
+  <h2>2. 방법론 (Methodology)</h2>
+
+  <h3 id="m1">2.1 광학 이미징 시스템 (Optical Imaging System)</h3>
+  <p>
+    본 연구에서는 <span class="term">투과 모드 <span class="term-en">(transmission mode)</span></span> 또는 <span class="term">반사 모드 <span class="term-en">(reflection mode)</span></span>로 구성 가능한 <strong>Olympus MX61L 반도체 검사 현미경</strong>을 사용하였다. 시스템에는 <strong>900–1700 nm</strong> 파장 범위의 IR 광원이 탑재되어 있으며, 적외선을 이용해 실리콘을 투과하여 페이스-투-페이스(face-to-face) 본딩 웨이퍼 스택의 양쪽 웨이퍼에 있는 피듀셜(fiducial)을 측정한다.
+  </p>
+  <p>
+    광학 구성에는 <strong>10×, 20×, 50×</strong> 배율의 IR 호환 대물렌즈 세 개가 포함되었으며, 픽셀 크기 5 μm의 SWIR 센서로 이미지를 획득하였다. 각 배율에서 물리적 분해능은 순서대로 <strong>0.5 μm, 0.25 μm, 0.1 μm</strong>이다.
+  </p>
+
+  <!-- Figure 1 -->
+  <div class="fig-wrap" id="fig1">
+    <div class="fig-img-area">
+      <div class="fig-icon">🔬</div>
+      <div class="fig-orig-label">Figure 1 (원본 논문 p.2 참조) — Olympus MX61L 현미경 구성도 및 이미지 예시</div>
+    </div>
+    <div class="fig-desc-area">
+      <div class="fig-num">그림 1 · Olympus MX61L 반도체 검사 현미경</div>
+      <div class="fig-caption-ko">
+        (a) Olympus MX61L 반도체 검사 현미경의 광 경로 모식도. (b) 투과 모드 이미지. (c) 반사 모드 이미지.
+      </div>
+      <div class="fig-explain">
+        <div class="fig-explain-label">📖 그림 설명</div>
+        (a) 현미경 본체 좌측에 IR 광원이 위치하며, 파란 선이 <strong>투과 모드 광 경로</strong>, 붉은 선이 <strong>반사 모드 광 경로</strong>를 나타낸다. 투과 모드에서는 빛이 웨이퍼 스택을 완전히 통과하므로 두 웨이퍼의 오버레이 마크 모두가 선명하게 포착된다. (b) 투과 모드 이미지: AIM 오버레이 마크의 상·하층 격자 패턴이 명확하게 대비되어 보임. (c) 반사 모드 이미지: 같은 마크이지만 매립된 층의 신호가 감쇠되어 대비가 낮고 일부 왜곡이 나타남. → 이 차이가 바로 두 모드의 TMU(총 측정 불확도) 차이를 유발하는 주요 원인이다.
+      </div>
+    </div>
+  </div>
+
+  <h3 id="m2">2.2 샘플 (Sample)</h3>
+  <p>
+    본 연구에 사용된 샘플은 <span class="term">웨이퍼-투-웨이퍼(W2W) 하이브리드 본딩 웨이퍼</span>로, 후-본딩 어닐링 없이 <strong>EVG Gemini FB 시스템</strong>을 이용해 상온에서 본딩되었다. 총 <span class="hl-yellow"><strong>86개의 AIM 오버레이 마크</strong></span>가 스크라이브 라인(scribe line)을 따라 분포되어 있으며, AIM 마크의 전체 풋프린트는 <strong>52.5 μm × 52.5 μm</strong>이다.
+  </p>
+
+  <!-- Figure 2 -->
+  <div class="fig-wrap" id="fig2">
+    <div class="fig-img-area">
+      <div class="fig-icon">🔵</div>
+      <div class="fig-orig-label">Figure 2 (원본 논문 p.3 참조) — W2W 웨이퍼 위 AIM 오버레이 마크 분포</div>
+    </div>
+    <div class="fig-desc-area">
+      <div class="fig-num">그림 2 · W2W 하이브리드 본딩 웨이퍼의 AIM 오버레이 마크 분포</div>
+      <div class="fig-caption-ko">W2W 하이브리드 본딩 웨이퍼의 AIM 오버레이 마크 분포도.</div>
+      <div class="fig-explain">
+        <div class="fig-explain-label">📖 그림 설명</div>
+        좌측: 원형 웨이퍼 전체에 걸쳐 격자 형태로 AIM 마크(분홍/빨간 사각형)가 균등하게 배치된 모습. 웨이퍼 중앙부부터 가장자리까지 모두 포함한다. 중앙: 확대한 다이(die) 배열로, 각 다이 경계의 스크라이브 라인에 마크가 위치함. 수치로는 가로 6.1 mm, 세로 33.2 mm, 전체 폭 24.7 mm. 우측: 단일 AIM 타겟 이미지로, 상·하층 격자 패턴의 중첩이 보임. 총 86개 측정점에서 오버레이 데이터를 수집하여 <strong>웨이퍼 전체 오버레이 맵</strong>을 생성한다.
+      </div>
+    </div>
+  </div>
+
+  <h3 id="m3">2.3 제안 알고리즘 (Proposed Algorithms)</h3>
+
+  <p>본 연구에서는 새로운 SGC 알고리즘을 개발하고 기존 엣지 기반 방법과 벤치마크 비교를 수행하였다.</p>
+
+  <h3 style="margin-top:18px;">2.3.1 엣지 기반 알고리즘 (Edge-based Algorithm)</h3>
+  <p>
+    전통적인 이미지 기반 오버레이 분석은 엣지 검출에 의존한다. 이미지 전처리와 <span class="term">캐니 엣지 검출 <span class="term-en">(Canny edge detection)</span></span> 이후, 마크 중심을 <span class="term">엣지 피팅 <span class="term-en">(edge-fitting)</span></span>(엣지 선의 선형 회귀) 또는 <span class="term">엣지 평균화 <span class="term-en">(edge-averaging)</span></span>(엣지 점들의 기하 평균)로 결정한다. 본딩 오버레이는 상층 마크와 하층 마크 중심 간의 변위로 계산된다.
+  </p>
+
+  <h3 style="margin-top:18px;">2.3.2 대칭 기반 그레이스케일 상관 (SGC) 알고리즘</h3>
+  <p>
+    하이브리드 본딩 공정에서 발생하는 노이즈, 낮은 대비, 마크 왜곡을 처리하는 전통적 방법의 한계를 극복하기 위해, <span class="term hl-blue">SGC 알고리즘</span>을 개발하였다. SGC는 상·하층 마크 모두에서 선택된 영역의 전체 그레이스케일 정보를 활용하고, <span class="term">서브픽셀 위치 결정 기술 <span class="term-en">(sub-pixel localization technology)</span></span>과 결합한다.
+  </p>
+  <p>
+    워크플로우: <strong>이미지 전처리 → X·Y축을 따른 상관계수 스캐닝 → 푸리에 급수 피팅으로 서브픽셀 대칭축 위치 결정 → 국지화된 축의 교차점으로 중심 결정 → 오버레이 계산</strong>
+  </p>
+
+  <!-- Figure 3 -->
+  <div class="fig-wrap" id="fig3">
+    <div class="fig-img-area">
+      <div class="fig-icon">📐</div>
+      <div class="fig-orig-label">Figure 3 (원본 논문 p.3 참조) — 엣지 기반 vs. SGC 알고리즘 비교 모식도</div>
+    </div>
+    <div class="fig-desc-area">
+      <div class="fig-num">그림 3 · 중심 위치 결정 방법의 모식도</div>
+      <div class="fig-caption-ko">
+        (a) 엣지 피팅 또는 엣지 평균화 방법에 기반한 엣지 기반 알고리즘. (b) 서브픽셀 위치 결정 기술과 함께 전체 그레이스케일 정보를 활용하는 SGC.
+      </div>
+      <div class="fig-explain">
+        <div class="fig-explain-label">📖 그림 설명</div>
+        <strong>(a) 엣지 기반:</strong> 상층(Upper)과 하층(Lower) 마크 이미지에 대해 '엣지 피팅'과 '엣지 평균화' 두 방법을 적용. 마크의 격자 경계선을 검출(빨간/파란 점 표시)하고 그 중심을 구함. 단점: 마크가 흐리거나 저대비인 경우 경계 검출 실패 위험. <strong>(b) SGC:</strong> 상·하층 마크에 대해 X방향, Y방향으로 각각 상관계수를 스캔하면 대칭축에서 피크가 나타나는 곡선(분홍 화살표)을 얻음. 이 피크의 서브픽셀 위치로부터 마크 중심을 결정. 장점: 엣지가 불명확해도 전체 그레이스케일 패턴에서 대칭 정보를 추출하므로 강건성이 높음.
+      </div>
+    </div>
+  </div>
+
+  <h3 id="m4">2.4 프린지 반사 방법 (Fringe Reflection Method)</h3>
+  <p>
+    <span class="term">프린지 반사(FR) 방법 <span class="term-en">(fringe reflection method)</span></span>은 반도체 웨이퍼의 표면 지형과 뒤틀림을 분석하는 <span class="term">전시야 광학 계측 기법 <span class="term-en">(full-field optical metrology)</span></span>이다. 디스플레이 화면을 이용해 주기적인 프린지 패턴(줄무늬 패턴)을 웨이퍼 표면에 투사하고, 고해상도 카메라(1360 × 1040 픽셀)로 반사된 이미지를 포착한다.
+  </p>
+  <p>
+    표면 불균일성은 반사된 프린지 패턴을 이동·왜곡시키며, 이 왜곡은 표면의 국소 기울기 변화에 직접 대응한다. <span class="term">위상 이동 <span class="term-en">(phase-shifting)</span></span> 및 <span class="term">위상 언래핑 <span class="term-en">(phase-unwrapping)</span></span> 알고리즘을 적용하여 3D 표면 프로파일을 재구성한다.
+  </p>
+  <p>
+    자체 개발 모듈의 성능: 공간 분해능 <strong>0.32 mm/픽셀</strong>, 수직 분해능 <strong>0.6 μm</strong>, 측정 완료 시간 <span class="hl-yellow"><strong>10초 이내</strong></span>.
+  </p>
+
+  <!-- Figure 4 -->
+  <div class="fig-wrap" id="fig4">
+    <div class="fig-img-area">
+      <div class="fig-icon">🌊</div>
+      <div class="fig-orig-label">Figure 4 (원본 논문 p.4 참조) — 프린지 반사 시스템 구성</div>
+    </div>
+    <div class="fig-desc-area">
+      <div class="fig-num">그림 4 · 프린지 반사(FR) 시스템</div>
+      <div class="fig-caption-ko">(a) 광학 구성. (b) 실제 시스템 사진.</div>
+      <div class="fig-explain">
+        <div class="fig-explain-label">📖 그림 설명</div>
+        (a) 모식도: CCD 카메라가 비스듬히 위에서 웨이퍼를 바라보고, 디스플레이 화면(프린지 패턴 투사)과 웨이퍼 사이의 반사각을 이용한다. α는 카메라 입사각, θ는 반사각, L은 카메라-웨이퍼 거리. (b) 실제 장비 사진: 암실 환경에서 웨이퍼 위에 밝은 줄무늬 패턴이 투사된 모습. 표면이 평탄하면 줄무늬가 직선으로 보이고, 뒤틀림이 있으면 굽어 보임. 이 굽힘량을 계산하여 3D 표면 지형도를 생성한다.
+      </div>
+    </div>
+  </div>
+
+  <h3 id="m5">2.5 딥러닝 기반 이미지 복원 모델 (Deep Learning Model for Image Restoration)</h3>
+  <p>
+    <span class="term">대량 생산 환경 <span class="term-en">(High-Volume Manufacturing, HVM)</span></span>에서는 높은 처리량 요구로 인해 각 이미지 획득 전에 정밀 초점을 맞출 시간이 부족하다. 이를 해결하기 위해 <span class="term hl-blue">DeblurGAN-v2</span> 프레임워크 기반의 이미지 복원 모델을 구현하였다.
+  </p>
+  <p>
+    이 모델은 <span class="term">조건부 생성적 적대 신경망 <span class="term-en">(conditional Generative Adversarial Network, cGAN)</span></span>을 기반으로 하며, 두 개의 신경망으로 구성된다.
+  </p>
+
+  <div class="table-wrap">
+    <div class="table-num">표 — GAN 구조 구성 요소</div>
+    <table class="paper-tbl">
+      <thead>
+        <tr>
+          <th>구성 요소</th>
+          <th>역할</th>
+          <th>학습 방식</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>생성기 (Generator)</strong></td>
+          <td>흐린 이미지 → 선명한 이미지로 변환 학습</td>
+          <td>판별기 피드백으로 지속 개선</td>
+        </tr>
+        <tr>
+          <td><strong>판별기 (Discriminator)</strong></td>
+          <td>복원된 이미지와 실제 선명한 이미지를 구별</td>
+          <td>적대적 학습 (adversarial training)</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="tbl-caption">생성기와 판별기가 "적대적" 학습을 통해 서로를 개선시키는 구조</div>
+  </div>
+
+  <p>
+    모델은 20× 배율로 촬영한 <span class="hl-yellow"><strong>16,052쌍의 초점 이탈/인-포커스 웨이퍼 이미지</strong></span>로 학습하고, <strong>1,783쌍</strong>의 테스트 세트로 평가하였다.
+  </p>
+
+  <!-- Figure 5 -->
+  <div class="fig-wrap" id="fig5">
+    <div class="fig-img-area">
+      <div class="fig-icon">🤖</div>
+      <div class="fig-orig-label">Figure 5 (원본 논문 p.4 참조) — DeblurGAN-v2 기반 이미지 복원 프레임워크</div>
+    </div>
+    <div class="fig-desc-area">
+      <div class="fig-num">그림 5 · DeblurGAN-v2 아키텍처 기반 이미지 복원 프레임워크</div>
+      <div class="fig-caption-ko">DeblurGAN-v2 아키텍처 기반 이미지 복원 프레임워크.</div>
+      <div class="fig-explain">
+        <div class="fig-explain-label">📖 그림 설명</div>
+        <strong>(a) 모델 학습 단계:</strong> 쌍을 이룬 데이터(초점 이탈 이미지 + 인-포커스 이미지)를 사용. 초점 이탈 이미지가 Generator(생성기)를 통과해 복원 이미지가 생성됨 → Discriminator(판별기)가 복원 이미지와 실제 인-포커스 이미지를 비교해 Loss(손실)를 계산 → 이 피드백으로 Generator가 점점 더 선명한 이미지를 생성하도록 학습됨. <strong>(b) 추론(Inference) 단계:</strong> 학습 완료 후, 실제 초점 이탈 이미지를 Generator에 입력하기만 하면 선명한 복원 이미지가 출력됨. 판별기 없이 Generator만 사용. → 이렇게 복원된 이미지로 SGC 알고리즘을 적용해 오버레이를 측정함.
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     RESULTS
+═══════════════════════════════════════════ -->
+<section class="section" id="results">
+  <h2>3. 결과 (Results)</h2>
+
+  <p>
+    본딩 스택은 86개 다이(die) 위치 모두에서 측정되었으며, 단순 단일 측정값 획득을 넘어 웨이퍼 스택의 포괄적인 <span class="term">오버레이 맵 <span class="term-en">(overlay map)</span></span>을 생성하는 것을 목표로 한다. 이 맵은 수율에 영향을 미칠 수 있는 공정 변동과 효과에 대한 귀중한 통찰을 제공한다.
+  </p>
+
+  <h3 id="r1">3.1 총 측정 불확도 (TMU, Total Measurement Uncertainty)</h3>
+
+  <p>
+    제안된 알고리즘의 안정성을 평가하기 위해 다양한 이미징 조건에서 TMU를 평가하였다. TMU는 수식 (1)로 정의된다.
+  </p>
+
+  <!-- Equation 1 -->
+  <div class="eq-wrap">
+    <div class="eq-content">
+      <div class="eq-math">TMU = √(Mean TIS² + TIS 3σ² + Precision²)</div>
+      <div class="eq-vars">
+        <span>Mean TIS</span>: 웨이퍼 전체 여러 측정 지점에서 얻은 TIS(Tool-Induced Shift, 도구 유발 이동) 값들의 평균<br>
+        <span>TIS 3σ</span>: 측정된 TIS 값들의 표준편차의 3배 — 공간 변동량 반영<br>
+        <span>Precision</span>: 동일 지점에서 10회 반복 측정한 오버레이 결과의 표준편차 × 3
+      </div>
+    </div>
+    <div class="eq-num">(1)</div>
+  </div>
+
+  <p>비교 조건: 투과 모드와 반사 모드, 50× 및 20× 배율.</p>
+
+  <div class="result-box">
+    <div class="result-box-label">🏆 최적 측정 구성 — 핵심 결과</div>
+    <ul>
+      <li><strong>최고 성능:</strong> 투과 모드 20× 배율 + SGC → <span class="hl-yellow">TMU <strong>X방향 5 nm, Y방향 9 nm</strong></span></li>
+      <li><strong>반사 모드:</strong> SGC와 함께 사용 시 20×/50× 배율 모두에서 TMU <strong>약 20 nm</strong> 근방의 탁월한 안정성</li>
+      <li><strong>엣지 기반 방법:</strong> 20× 반사 모드에서 TMU가 <span class="hl-blue"><strong>584 nm까지 폭발적으로 증가</strong></span> (SGC는 동일 조건에서 21 nm)</li>
+    </ul>
+  </div>
+
+  <!-- Figure 6 -->
+  <div class="fig-wrap" id="fig6">
+    <div class="fig-img-area">
+      <div class="fig-icon">📊</div>
+      <div class="fig-orig-label">Figure 6 (원본 논문 p.5 참조) — 다양한 이미징 조건에서의 TMU 막대 그래프</div>
+    </div>
+    <div class="fig-desc-area">
+      <div class="fig-num">그림 6 · 다양한 이미징 조건에서의 본딩 오버레이 측정 TMU</div>
+      <div class="fig-caption-ko">다양한 이미징 조건에서의 본딩 오버레이 측정 TMU (단위: nm). 파란 막대: X방향, 주황 막대: Y방향.</div>
+      <div class="fig-explain">
+        <div class="fig-explain-label">📖 그림 설명</div>
+        4개 조건(반사 50×, 투과 50×, 반사 20×, 투과 20×)별로 SGC / 엣지 피팅 / 엣지 평균화 세 알고리즘의 TMU를 비교한 막대 그래프. 주목할 점: <strong>반사 모드 20×</strong> 패널에서 엣지 기반 방법의 막대가 500 nm 이상으로 치솟는 반면, SGC는 여전히 낮은 값(21~37 nm)을 유지한다. 반면 <strong>투과 모드 20×</strong>에서는 모든 방법의 성능이 개선되며, SGC는 5~9 nm의 최저 TMU를 달성한다. 이는 SGC가 낮은 배율과 낮은 이미지 품질에서도 얼마나 강건한지를 극명하게 보여준다.
+      </div>
+    </div>
+  </div>
+
+  <!-- Figures 7-9 combined explanation -->
+  <div class="fig-wrap" id="fig7-9">
+    <div class="fig-img-area">
+      <div class="fig-icon">📈</div>
+      <div class="fig-orig-label">Figure 7–9 (원본 논문 pp.5–6 참조) — Mean TIS, TIS 3σ, Precision 세부 결과</div>
+    </div>
+    <div class="fig-desc-area">
+      <div class="fig-num">그림 7·8·9 · TMU 세부 구성 요소 분석</div>
+      <div class="fig-caption-ko">
+        그림 7: 다양한 이미징 조건에서의 평균 TIS. 그림 8: TIS 3σ. 그림 9: 정밀도(Precision).
+      </div>
+      <div class="fig-explain">
+        <div class="fig-explain-label">📖 그림 설명</div>
+        이 세 그래프는 TMU를 구성하는 세 요소를 개별적으로 분해한 것이다. <strong>Mean TIS</strong>(그림 7)는 도구 자체의 체계적 오차를 나타내며, SGC는 모든 조건에서 수 nm 수준의 낮은 값을 보인다. <strong>TIS 3σ</strong>(그림 8)는 웨이퍼 전체에 걸친 공간 변동을 나타내며, 반사 20× 조건에서 엣지 기반 방법들이 각각 497 nm, 543 nm의 극단적인 값을 보이는 반면 SGC는 25~56 nm에 불과하다. <strong>Precision</strong>(그림 9)도 마찬가지로 반사 20×에서 엣지 기반 방법이 308~493 nm까지 올라가는 것과 달리 SGC는 13~5 nm의 안정된 값을 유지한다.
+      </div>
+    </div>
+  </div>
+
+  <h3 id="r2">3.2 오버레이 측정 결과 (Overlay Measurement Results)</h3>
+
+  <p>
+    본 연구는 다양한 이미징 조건에서 서로 다른 알고리즘의 성능을 비교하였다. <span class="hl-yellow">50× 배율</span>에서는 엣지 기반 방법과 SGC 모두 투과·반사 모드 양쪽에서 일관된 성능을 유지한다. 반면 <span class="hl-blue"><strong>20× 배율</strong>에서는 두 접근 방식 사이에 현저한 차이</span>가 나타난다.
+  </p>
+
+  <!-- Figure 10 -->
+  <div class="fig-wrap" id="fig10">
+    <div class="fig-img-area">
+      <div class="fig-icon">🎯</div>
+      <div class="fig-orig-label">Figure 10 (원본 논문 p.6 참조) — 조건별 오버레이 측정 벡터 맵</div>
+    </div>
+    <div class="fig-desc-area">
+      <div class="fig-num">그림 10 · 다양한 이미징 조건에서의 본딩 오버레이 측정</div>
+      <div class="fig-caption-ko">대표 다이에서의 오버레이 측정 결과. 화살표의 방향과 길이가 오버레이 벡터를 나타냄. 기준선: 100 nm.</div>
+      <div class="fig-explain">
+        <div class="fig-explain-label">📖 그림 설명</div>
+        4개 조건별로 SGC(파란), 엣지 피팅(빨간), 엣지 평균화(초록) 세 알고리즘의 오버레이 벡터를 화살표로 표시한 그래프. <strong>반사/투과 모드 50×:</strong> 세 화살표가 거의 같은 방향·크기를 가리켜 알고리즘 간 일치도가 높음. <strong>반사 모드 20×:</strong> 엣지 기반 방법의 화살표(빨간, 초록)가 SGC(파란)와 크게 다른 방향을 가리키며, 오차가 수백 nm에 달함. <strong>투과 모드 20×:</strong> SGC는 50× 결과와 거의 동일한 방향·크기를 유지하며 일관성 확인.
+      </div>
+    </div>
+  </div>
+
+  <!-- Figure 11 -->
+  <div class="fig-wrap" id="fig11">
+    <div class="fig-img-area">
+      <div class="fig-icon">📉</div>
+      <div class="fig-orig-label">Figure 11 (원본 논문 p.7 참조) — 알고리즘별 측정 편향 비교 막대 그래프</div>
+    </div>
+    <div class="fig-desc-area">
+      <div class="fig-num">그림 11 · SGC 및 엣지 기반 알고리즘의 측정 편향 비교</div>
+      <div class="fig-caption-ko">기준 조건(투과 모드 20×, SGC) 대비 각 알고리즘·조건별 측정 편향(nm). x·y·tot 각 방향으로 표시.</div>
+      <div class="fig-explain">
+        <div class="fig-explain-label">📖 그림 설명</div>
+        기준(SGC + 투과 20×)을 0으로 놓고 각 조건의 편향을 막대로 표시. <strong>50× 조건:</strong> 모든 알고리즘의 편향이 40 nm 이내로 양호. <strong>반사 모드 20×:</strong> 엣지 기반 방법의 편향이 180 nm를 초과, 일부 조건에서 600 nm에 근접. SGC는 같은 조건에서도 편향이 50 nm 이내로 유지됨. → 이는 SGC가 대량 생산 환경의 일반 측정 조건(20×)에서도 신뢰할 수 있는 유일한 알고리즘임을 의미한다.
+      </div>
+    </div>
+  </div>
+
+  <h3 id="r3">3.3 오버레이 모델 및 웨이퍼 지형 (Overlay Model and Wafer Topography)</h3>
+
+  <p>
+    웨이퍼 전체 오버레이 이미지를 투과 모드(50×)에서 획득하고 SGC로 분석하였다. 웨이퍼 본딩 오버레이 오차의 원인을 조사하기 위해, 원시 데이터를 6-파라미터 선형 오버레이 모델을 사용하여 수식 (2)와 같이 이동(shift), 회전(rotation), 스케일링(scaling) 성분으로 분해하였다.
+  </p>
+
+  <!-- Equation 2 -->
+  <div class="eq-wrap">
+    <div class="eq-content">
+      <div class="eq-math">DX = T<sub>X</sub> + E<sub>X</sub>X − R<sub>X</sub>Y + e<sub>X</sub><br>DY = T<sub>Y</sub> + E<sub>Y</sub>Y + R<sub>Y</sub>X + e<sub>Y</sub></div>
+      <div class="eq-vars">
+        <span>DX, DY</span>: X·Y 방향 오버레이 변위<br>
+        <span>T<sub>X</sub>, T<sub>Y</sub></span>: 이동 성분 (Shift) — 도구의 정렬·스테이지 제어로 결정<br>
+        <span>E<sub>X</sub>, E<sub>Y</sub></span>: 스케일링 성분 (Scaling) — 열 제어·웨이퍼 뒤틀림과 연관<br>
+        <span>R<sub>X</sub>, R<sub>Y</sub></span>: 회전 성분 (Rotation) — 도구 정렬로 결정<br>
+        <span>e<sub>X</sub>, e<sub>Y</sub></span>: 잔차 (Residual) — 선형 보정으로 제거 불가능한 비선형 왜곡
+      </div>
+    </div>
+    <div class="eq-num">(2)</div>
+  </div>
+
+  <!-- Figure 12 -->
+  <div class="fig-wrap" id="fig12">
+    <div class="fig-img-area">
+      <div class="fig-icon">🗺️</div>
+      <div class="fig-orig-label">Figure 12 (원본 논문 p.8 참조) — 6-파라미터 오버레이 모델 분석 결과</div>
+    </div>
+    <div class="fig-desc-area">
+      <div class="fig-num">그림 12 · 6-파라미터 오버레이 모델 분석 결과</div>
+      <div class="fig-caption-ko">
+        (a) 오버레이 벡터 맵과 이동·회전·스케일링·잔차 성분으로의 분해. (b) 오버레이 성분의 정량적 비교 (nm).
+      </div>
+      <div class="fig-explain">
+        <div class="fig-explain-label">📖 그림 설명</div>
+        (a) 5개 벡터 맵으로 구성: <strong>전체 오버레이</strong>(OVL<sub>X</sub>=578 nm, OVL<sub>Y</sub>=481 nm) → <strong>이동(Shift)</strong>(T<sub>X</sub>=−4 nm, T<sub>Y</sub>=48 nm, 방사형이 아닌 균일한 단방향 화살표) → <strong>회전(Rotation)</strong>(R=1.75 μrad, 시계방향, 원형 소용돌이 패턴) → <strong>스케일링(Scaling)</strong>(E<sub>X</sub>=1.6 ppm, E<sub>Y</sub>=0.3 ppm, 방사형 확장 패턴) → <strong>잔차(Residual)</strong>(3σ<sub>X</sub>=190 nm, 3σ<sub>Y</sub>=200 nm, 불규칙 패턴). (b) 막대 그래프: Shift 49 nm → <strong>Rotation 261 nm</strong> → Scaling 113 nm → <strong>Residual 277 nm</strong>. 회전과 잔차가 주요 오차 원인임이 명확하며, 이동 성분은 상대적으로 잘 제어됨. → <span class="hl-blue">비선형 왜곡과 각도 편차가 현재 본딩 공정의 지배적 오차 요인</span>임을 시사.
+      </div>
+    </div>
+  </div>
+
+  <!-- Figure 13 -->
+  <div class="fig-wrap" id="fig13">
+    <div class="fig-img-area">
+      <div class="fig-icon">🌐</div>
+      <div class="fig-orig-label">Figure 13 (원본 논문 p.8 참조) — 안장 형태 웨이퍼 왜곡 및 오버레이 상관 분석</div>
+    </div>
+    <div class="fig-desc-area">
+      <div class="fig-num">그림 13 · 프린지 반사로 측정된 안장형 왜곡 및 오버레이 분포와의 상관</div>
+      <div class="fig-caption-ko">
+        (a) 프린지 반사로 측정된 안장형(saddle-shaped) 왜곡. (b) 웨이퍼 수준 왜곡과 오버레이 결과의 상관 분석.
+      </div>
+      <div class="fig-explain">
+        <div class="fig-explain-label">📖 그림 설명</div>
+        (a) 3D 렌더링: 웨이퍼 표면이 말의 안장처럼 한 축은 위로 볼록(+5 μm), 다른 축은 아래로 오목(−8 μm)한 형태. 이는 증착·열처리 과정의 방향성 패터닝(예: 긴 배선 레이아웃)으로 인한 비대칭 응력 때문으로 추정됨. (b) 좌측: 지형 맵(Topography Map, 단위 μm) — 색이 진한 영역이 더 큰 변형량. 우측: 오버레이 맵(Overlay Map, 단위 nm) — 오버레이 값이 큰 영역(빨간색)이 지형 변형이 큰 영역과 공간적으로 일치함. → <span class="hl-yellow">웨이퍼 표면 변형이 오버레이 핑거프린트의 주요 원인</span>임을 직접적으로 입증하는 결과.
+      </div>
+    </div>
+  </div>
+
+  <h3 id="r4">3.4 딥러닝 기반 이미지 복원 성능 (Deep Learning Image Restoration)</h3>
+
+  <p>
+    딥러닝 모델을 20× 배율로 촬영한 <span class="hl-yellow">±10 μm 초점 이탈 범위</span>의 테스트 세트에서 평가하였다. 초점 이탈 이미지 복원 후 SGC로 오버레이 분석을 수행하고, 결과를 인-포커스 결과와 비교하여 측정 편향을 산출하였다.
+  </p>
+
+  <div class="result-box">
+    <div class="result-box-label">✅ 딥러닝 복원 모델 — 핵심 성능</div>
+    <ul>
+      <li><strong>투과 모드:</strong> 최대 측정 편향 <span class="hl-yellow"><strong>16 nm 미만</strong></span></li>
+      <li><strong>반사 모드:</strong> 최대 측정 편향 <strong>30 nm 미만</strong></li>
+      <li>→ 기계적 재초점 없이도 최적 초점 이미지와 비견되는 측정 정확도·정밀도 달성</li>
+    </ul>
+  </div>
+
+  <!-- Figure 14 -->
+  <div class="fig-wrap" id="fig14">
+    <div class="fig-img-area">
+      <div class="fig-icon">🔍</div>
+      <div class="fig-orig-label">Figure 14 (원본 논문 p.9 참조) — 인-포커스 vs. 초점 이탈(+10 μm) 이미지 비교</div>
+    </div>
+    <div class="fig-desc-area">
+      <div class="fig-num">그림 14 · 인-포커스 이미지(좌) 및 +10 μm 초점 이탈 이미지(우)</div>
+      <div class="fig-caption-ko">(a) 투과 모드. (b) 반사 모드에서의 인-포커스(Defocus=0 μm)와 +10 μm 초점 이탈 이미지 비교.</div>
+      <div class="fig-explain">
+        <div class="fig-explain-label">📖 그림 설명</div>
+        좌측 이미지(Defocus=0 μm): AIM 마크의 격자 패턴이 선명하게 보임. 우측 이미지(Defocus=+10 μm): 같은 마크이지만 심각하게 흐릿해져 격자 경계가 구분되지 않음. (a) 투과 모드: 초점 이탈 이미지도 전체적인 윤곽은 식별 가능하지만 정밀 계측에는 부적합. (b) 반사 모드: 초점 이탈 시 이미지가 거의 균일한 회색으로 변해 엣지 기반 방법으로는 완전히 측정 불가 수준. → 딥러닝 복원 모델이 이런 열악한 이미지를 복원하는 역할을 담당함.
+      </div>
+    </div>
+  </div>
+
+  <!-- Figure 15 -->
+  <div class="fig-wrap" id="fig15">
+    <div class="fig-img-area">
+      <div class="fig-icon">📏</div>
+      <div class="fig-orig-label">Figure 15 (원본 논문 p.9 참조) — 초점 이탈 수준별 SGC 오버레이 결과 및 편향</div>
+    </div>
+    <div class="fig-desc-area">
+      <div class="fig-num">그림 15 · 초점 이탈 수준별 SGC 오버레이 측정 결과 및 편향</div>
+      <div class="fig-caption-ko">
+        SGC로 분석한 오버레이 측정 결과(위)와 이에 대응하는 측정 편향(아래). (a) 투과 모드. (b) 반사 모드.
+      </div>
+      <div class="fig-explain">
+        <div class="fig-explain-label">📖 그림 설명</div>
+        위 패널: 각 초점 이탈 레벨(−10 ~ +10 μm)에서 딥러닝 복원 후 SGC로 측정한 오버레이 벡터. 화살표 방향·크기가 거의 일정하게 유지됨. 아래 패널: 인-포커스 결과 대비 편향(Bias, nm). <strong>(a) 투과 모드:</strong> 편향이 ±15 nm 이내로 매우 안정적. <strong>(b) 반사 모드:</strong> 편향이 ±30 nm 이내로 유지되며, 일부 구간에서 약간의 변동이 있지만 실용적으로 허용 가능한 범위. → 딥러닝 복원이 넓은 초점 이탈 범위에 걸쳐 일관된 계측 품질을 보장함.
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     CONCLUSIONS
+═══════════════════════════════════════════ -->
+<section class="section" id="conclusion">
+  <h2>4. 결론 (Conclusions)</h2>
+
+  <p>
+    본 연구는 3D 집적화에서의 웨이퍼 본딩 오버레이 계측에 대한 포괄적인 조사를 제공하였다. 세 가지 핵심 기여를 정리하면 다음과 같다.
+  </p>
+
+  <div class="result-box">
+    <div class="result-box-label">📋 핵심 기여 요약</div>
+    <ul>
+      <li>
+        <strong>① SGC 알고리즘:</strong> 하이브리드 본딩에서의 마크 왜곡 및 저대비 문제 해결. 전통적 엣지 기반 방법 대비 우수한 강건성 — 열화된 이미지에서도 나노미터 수준의 정밀도 유지.
+      </li>
+      <li>
+        <strong>② 프린지 반사 + 오버레이 모델 분석:</strong> <span class="hl-yellow">회전(Rotation)</span>과 <span class="hl-yellow">잔차(Residual)</span>가 주요 오차 원인임을 규명. 웨이퍼 지형과 오버레이 분포 간의 공간적 상관 확인 → 본딩 공정 파라미터 최적화를 위한 물리적 통찰 제공.
+      </li>
+      <li>
+        <strong>③ 딥러닝 이미지 복원:</strong> HVM 환경의 초점 이탈 문제 해결. 기계적 재초점 없이 정확한 측정 가능 → 효율성 대폭 향상.
+      </li>
+    </ul>
+  </div>
+
+  <p>
+    향후 연구 방향: ① 경량 구현을 위한 모델 아키텍처 최적화로 계산 비용 감소 및 처리 속도 향상, ② 더 다양한 초점 이탈 샘플을 학습 데이터에 포함하여 다양한 장비 환경에 대한 모델 일반화 능력 강화.
+  </p>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     REFERENCES
+═══════════════════════════════════════════ -->
+<section class="section" id="refs">
+  <h2>참고문헌 (References)</h2>
+  <ol class="ref-list">
+    <li>[1] B. Zhang et al., "Scaling Cu/SiCN Wafer-to-Wafer Hybrid Bonding down to 400 nm interconnect pitch," <em>IEEE ECTC 2024</em>, Denver, CO, pp. 312–318. DOI: 10.1109/ECTC51529.2024.00058</li>
+    <li>[2] L. Witters et al., "High-Density Wafer Level Connectivity Using Frontside Hybrid Bonding at 250nm Pitch," <em>VLSI Technology and Circuits 2025</em>, Kyoto.</li>
+    <li>[3] A. Starikov, "Metrology of image placement," <em>AIP Conf. Proc.</em>, 449, 513–535 (1998).</li>
+    <li>[6] IRDS Metrology 2024.</li>
+    <li>[10] S. Grechin et al., "Artificial intelligence measurement in imaging-based overlay metrology," <em>Proc. SPIE 12955</em>, 129552P (2024).</li>
+    <li>[11] K. Takasugi et al., "An out-of-focus blur removal technique for high-throughput overlay measurement," <em>Proc. SPIE 13426</em>, 134263T (2025).</li>
+    <li>[12] J. Canny, "A Computational Approach to Edge Detection," <em>IEEE Trans. PAMI</em>, vol. PAMI-8, no. 6, pp. 679–698 (1986).</li>
+    <li>[14] O. Kupyn et al., "DeblurGAN," <em>CVPR 2018</em>, pp. 8183–8192.</li>
+    <li>[15] O. Kupyn et al., "DeblurGAN-v2," <em>ICCV 2019</em>, pp. 8877–8886.</li>
+  </ol>
+</section>
+
+<footer class="paper-footer">
+  <span>번역: Claude (Anthropic) · 원문: Lin & Ku, SPIE Proc. 13981, 139810K (2026)</span>
+  <span>Auros_인턴 / P2_Paper 요약</span>
+</footer>
+
+</body>
+</html>
