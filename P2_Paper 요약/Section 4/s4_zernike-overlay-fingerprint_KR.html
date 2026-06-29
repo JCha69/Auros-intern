@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>제르니케 다항식을 이용한 본딩 유발 오버레이 핑거프린트 모델링</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Noto+Sans+KR:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 14.5px;
+      line-height: 1.88;
+      background: #fafaf8;
+      color: #1a1a1a;
+    }
+
+    .page-wrap {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 60px 40px 80px;
+    }
+
+    /* ── Header ── */
+    header {
+      border-top: 4px solid #1a4a7a;
+      padding-top: 32px;
+      margin-bottom: 36px;
+    }
+
+    .paper-label {
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      color: #1a4a7a;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      font-size: 26px;
+      font-weight: 700;
+      line-height: 1.4;
+      color: #0e2a47;
+      margin-bottom: 10px;
+    }
+
+    .title-en {
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 13px;
+      color: #666;
+      font-style: italic;
+      margin-bottom: 20px;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 4px 14px;
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 12.5px;
+      color: #555;
+    }
+
+    .meta-grid .label { font-weight: 600; color: #1a4a7a; }
+
+    /* ── TOC ── */
+    .toc {
+      background: #eef3f9;
+      border-left: 4px solid #1a4a7a;
+      border-radius: 0 8px 8px 0;
+      padding: 22px 26px;
+      margin: 36px 0;
+    }
+
+    .toc-title {
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      color: #1a4a7a;
+      letter-spacing: 0.06em;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+
+    .toc ol {
+      padding-left: 18px;
+    }
+
+    .toc li {
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .toc a {
+      color: #1a4a7a;
+      text-decoration: none;
+    }
+
+    .toc a:hover { text-decoration: underline; }
+
+    /* ── Abstract ── */
+    .abstract {
+      background: #f0f4fa;
+      border: 1px solid #c8d8ec;
+      border-radius: 8px;
+      padding: 26px 30px;
+      margin-bottom: 44px;
+    }
+
+    .abstract-label {
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      color: #1a4a7a;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .abstract p { margin-bottom: 10px; }
+    .abstract p:last-child { margin-bottom: 0; }
+
+    .keywords {
+      margin-top: 14px;
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 12.5px;
+      color: #555;
+    }
+
+    .keywords strong { color: #1a4a7a; }
+
+    /* ── Section headings ── */
+    h2 {
+      font-size: 19px;
+      font-weight: 700;
+      color: #0e2a47;
+      margin-top: 52px;
+      margin-bottom: 18px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #1a4a7a;
+    }
+
+    h3 {
+      font-size: 15.5px;
+      font-weight: 700;
+      color: #1a4a7a;
+      margin-top: 30px;
+      margin-bottom: 12px;
+    }
+
+    /* ── Body ── */
+    p { margin-bottom: 16px; }
+
+    /* ── Highlights ── */
+    .hl-yellow { background: #fff3a3; padding: 1px 3px; border-radius: 3px; }
+    .hl-blue   { background: #cce0f5; padding: 1px 3px; border-radius: 3px; }
+    strong     { font-weight: 700; }
+
+    /* ── Term tags ── */
+    .term {
+      font-weight: 600;
+      color: #0e2a47;
+    }
+
+    /* ── Figure boxes ── */
+    .figure-box {
+      background: #fff;
+      border: 1px solid #d0dce9;
+      border-radius: 10px;
+      padding: 24px 28px;
+      margin: 28px 0;
+    }
+
+    .figure-header {
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      color: #1a4a7a;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .figure-title {
+      font-weight: 700;
+      font-size: 14px;
+      color: #0e2a47;
+      margin-bottom: 14px;
+    }
+
+    .figure-caption {
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 12.5px;
+      color: #444;
+      line-height: 1.75;
+    }
+
+    .subfig {
+      background: #f5f8fc;
+      border-left: 3px solid #1a4a7a;
+      padding: 10px 14px;
+      margin: 10px 0;
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 12.5px;
+      border-radius: 0 6px 6px 0;
+    }
+
+    .subfig-label {
+      font-weight: 700;
+      color: #1a4a7a;
+    }
+
+    .figure-message {
+      margin-top: 14px;
+      font-style: italic;
+      color: #555;
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 12.5px;
+      border-top: 1px dashed #ccc;
+      padding-top: 10px;
+    }
+
+    /* ── Result callout ── */
+    .result-box {
+      background: linear-gradient(135deg, #eef6ff 0%, #f5faff 100%);
+      border: 1px solid #a8c8e8;
+      border-left: 5px solid #1a4a7a;
+      border-radius: 0 10px 10px 0;
+      padding: 18px 22px;
+      margin: 22px 0;
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 13.5px;
+    }
+
+    .result-box .result-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: #1a4a7a;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    /* ── Correction scheme table ── */
+    .scheme-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 13px;
+    }
+
+    .scheme-table th {
+      background: #1a4a7a;
+      color: #fff;
+      padding: 10px 14px;
+      text-align: left;
+      font-weight: 600;
+    }
+
+    .scheme-table td {
+      padding: 9px 14px;
+      border-bottom: 1px solid #dce6f0;
+      vertical-align: top;
+    }
+
+    .scheme-table tr:nth-child(even) td { background: #f3f7fc; }
+
+    /* ── Conclusion ── */
+    .conclusion-card {
+      background: #0e2a47;
+      color: #f0f5ff;
+      border-radius: 12px;
+      padding: 30px 34px;
+      margin-top: 42px;
+    }
+
+    .conclusion-card h2 {
+      color: #a8cef0;
+      border-bottom-color: #2a5f8a;
+      font-size: 17px;
+      margin-top: 0;
+    }
+
+    .conclusion-card p { color: #dbe8f7; margin-bottom: 14px; }
+
+    .conclusion-card .hl-yellow { background: #6b5c00; color: #ffe566; }
+    .conclusion-card .hl-blue   { background: #1a3d5a; color: #a8cef0; }
+
+    /* ── References ── */
+    .references {
+      margin-top: 50px;
+      padding-top: 24px;
+      border-top: 2px solid #c8d8ec;
+    }
+
+    .references h2 {
+      font-size: 16px;
+      margin-top: 0;
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .ref-item {
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 12px;
+      color: #555;
+      line-height: 1.65;
+      margin: 8px 0;
+      padding-left: 28px;
+      text-indent: -28px;
+    }
+
+    /* ── Footer ── */
+    footer {
+      margin-top: 60px;
+      padding-top: 20px;
+      border-top: 1px solid #ddd;
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 11.5px;
+      color: #999;
+      text-align: center;
+    }
+
+    @media (max-width: 600px) {
+      .page-wrap { padding: 30px 20px 60px; }
+      h1 { font-size: 21px; }
+    }
+  </style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <!-- ── Header ── -->
+  <header>
+    <div class="paper-label">Section 4 · 웨이퍼 본딩 및 오버레이 계측</div>
+    <h1>제르니케 다항식을 이용한<br>본딩 유발 오버레이 핑거프린트 모델링</h1>
+    <div class="title-en">Bonding-Induced overlay fingerprint modeling using Zernike polynomials</div>
+    <div class="meta-grid">
+      <span class="label">저자</span>
+      <span>Benjamin Duclaux, Maxime Gatefait, Ludovic Berthier, Lucie Borget, Aline Gouantes, Emilie Deloffre, Bastien Orlando, Laurent Lecarpentier</span>
+      <span class="label">소속</span>
+      <span>STMicroelectronics, Crolles, France</span>
+      <span class="label">출판</span>
+      <span>SPIE Proc. Vol. 13981, 139810L · Metrology, Inspection, and Process Control XL · 2026</span>
+      <span class="label">DOI</span>
+      <span>10.1117/12.3089026</span>
+    </div>
+  </header>
+
+  <!-- ── TOC ── -->
+  <nav class="toc">
+    <div class="toc-title">목차</div>
+    <ol>
+      <li><a href="#abstract">초록 (Abstract)</a></li>
+      <li><a href="#intro">서론 (Introduction)</a></li>
+      <li><a href="#model">모델 최적화 및 결과</a>
+        <ol>
+          <li><a href="#cpe-limit">CPE 보정의 한계</a></li>
+          <li><a href="#zernike-intro">제르니케 다항식 도입</a></li>
+          <li><a href="#residuals">잔류 오버레이 분석 및 복합 보정</a></li>
+          <li><a href="#variability">변동성 예산 분석</a></li>
+          <li><a href="#howa3">HOWA3와의 결합</a></li>
+          <li><a href="#recipe">본딩 레시피별 분석</a></li>
+        </ol>
+      </li>
+      <li><a href="#validation">모델 검증 및 맥락 의존성</a></li>
+      <li><a href="#conclusion">결론</a></li>
+      <li><a href="#references">참고문헌</a></li>
+    </ol>
+  </nav>
+
+  <!-- ── Abstract ── -->
+  <section id="abstract" class="abstract">
+    <div class="abstract-label">초록 Abstract</div>
+    <p>
+      반도체 설계는 전통적인 2차원 평면 개발 방식에서 벗어나 3차원 공간을 적극 활용하는 방향으로 전환되고 있다.
+      <strong><span class="term">웨이퍼 본딩 기술 (Wafer Bonding Technology)</span></strong>은 고밀도·고성능 반도체 소자를 구현하는 핵심 기술이지만,
+      <strong>본딩 공정 중 발생하는 왜곡(distortion)</strong>은 리소그래피 레이어 간 최대 달성 가능 오버레이 정확도를 제한하는 주요 요인이다.
+    </p>
+    <p>
+      본 연구는 두 장치 웨이퍼의 <span class="term">하이브리드 본딩 (Hybrid Bonding)</span> 과정에서 발생하는
+      <span class="term">오버레이 핑거프린트 (Overlay Fingerprint)</span>에 초점을 맞춘다.
+      본딩 파동(bonding wave) 전파로 유발되는 <strong>고도로 대칭적인 오버레이 형상</strong>을
+      다양한 차수의 <span class="term">제르니케 다항식 (Zernike Polynomials)</span>으로 모델링하였다.
+    </p>
+    <p>
+      측정 데이터에서 직접 생성하는 전통적인 <span class="term">노출별 보정 (Correction Per Exposure, CPE)</span> 방식 대비
+      본 모델링 접근법의 장점을 제시하고, 다양한 본더 핑거프린트 모델링 및 본딩 레시피 조정의 영향을 분석한다.
+      이를 바탕으로 최적 오버레이 성능 달성을 위한 리소그래피 보정 방안을 제안·평가한다.
+    </p>
+    <div class="keywords">
+      <strong>키워드:</strong> 오버레이(Overlay), 본딩(Bonding), 첨단 공정 제어(Advanced Process Control, APC),
+      노출별 보정(Correction Per Exposure, CPE), 제르니케 다항식(Zernike Polynomials), 후면 웨이퍼 공정(Backside Wafer Processing)
+    </div>
+  </section>
+
+  <!-- ── Introduction ── -->
+  <section id="intro">
+    <h2>1. 서론</h2>
+
+    <p>
+      <strong><span class="term">하이브리드 본딩 기술 (Hybrid Bonding Technology)</span></strong>은 두 장치 웨이퍼 간에
+      구리-구리(Cu-Cu) 및 산화물-산화물(oxide-to-oxide) 직접 연결을 가능하게 하는 고도 반도체 공정이다.
+      이 기술은 <strong>상호연결 밀도, 전기적 성능, 열 효율</strong>을 향상시켜 다양한 분야의 차세대 반도체 소자에 핵심 기술로 자리잡고 있다.
+    </p>
+
+    <div class="figure-box" id="fig1">
+      <div class="figure-header">Figure 1</div>
+      <div class="figure-title">하이브리드 본딩 통합 공정 모식도</div>
+      <div class="figure-caption">
+        <div class="subfig">
+          <span class="subfig-label">공정 흐름 (좌 → 우):</span><br>
+          하이브리드 본딩 공정은 <strong>표면 준비(CMP)</strong>로 시작한다. 두 웨이퍼를 화학기계적 평탄화(Chemical Mechanical Planarization, CMP)하여 구리(Cu)와 실리콘 산화물(SiO₂) 층이 본딩을 위해 노출되도록 한다. 레이어 색상: <span style="color:#c8a000">■</span> 구리(Cu), <span style="color:#888">■</span> SiO₂, <span style="color:#c00">■</span> 확산 장벽(Diffusion barrier), <span style="color:#2a7a2a">■</span> 캡핑(Capping).
+        </div>
+        <div class="subfig">
+          <span class="subfig-label">직접 본딩 단계:</span><br>
+          CMP, 플라즈마 활성화, 세정 후 한 웨이퍼를 뒤집어 face-to-face로 정렬하여 직접 본딩한다.
+          본딩 이후 <strong>① 오버레이 계측</strong>을 실시하고, <strong>② 어닐링(Anneal)</strong>으로 Cu-Cu 접합을 강화한다.
+          오버레이 수치가 사양 미달 시 어닐링 전 본딩 재작업(rework)이 가능하다.
+        </div>
+        <div class="figure-message">
+          ▶ 이 그림은 하이브리드 본딩이 CMP → 정렬 및 직접 본딩 → 계측 → 어닐링 순서로 진행되며,
+          오버레이 품질 관리가 공정 초기에 개입할 수 있음을 보여준다.
+        </div>
+      </div>
+    </div>
+
+    <p>
+      본딩 후 <span class="term">오버레이 계측 (Overlay Metrology)</span>을 통해 두 웨이퍼 사이의 본딩 정렬 성능을 검사하고,
+      본딩 공정이 유발하는 전형적인 오버레이 왜곡 핑거프린트를 확인한다(Fig.2).
+    </p>
+
+    <div class="figure-box" id="fig2">
+      <div class="figure-header">Figure 2</div>
+      <div class="figure-title">본딩 후 전형적인 오버레이 핑거프린트</div>
+      <div class="figure-caption">
+        <div class="subfig">
+          <span class="subfig-label">(좌) 본딩 직후 원시 오버레이 핑거프린트 (Raw Overlay data post bonding):</span><br>
+          웨이퍼 전면에 걸쳐 다양한 방향과 크기의 벡터 화살표가 분포한다. 화살표의 방향과 길이는 각 측정점에서의 오버레이 오차의 방향·크기를 나타낸다. 웨이퍼 엣지와 중심부에서 큰 오차 벡터가 보인다.
+        </div>
+        <div class="subfig">
+          <span class="subfig-label">(우) 10파라미터 선형 모델 보정 후 오버레이 잔류 오차 (Overlay residuals, 10Par, post bonding):</span><br>
+          <span class="term">10파라미터 선형 모델 (10Par Linear Model)</span> 보정 적용 후에도 <strong>고도로 대칭적이고 독특한 형상의 핑거프린트가 잔존</strong>한다. 이 대칭성은 본딩 파동 전파 이론에 의해 설명된다.
+        </div>
+        <div class="figure-message">
+          ▶ 선형 모델만으로는 본딩 유발 고차 오버레이 왜곡을 제거할 수 없음을 직관적으로 보여주며,
+          더 정교한 모델링의 필요성을 제기한다.
+        </div>
+      </div>
+    </div>
+
+    <p>
+      10파라미터 선형 모델 보정 적용 후에도 남는 이 대칭적 형상은
+      <strong><span class="term">본딩 파동 전파 이론 (Bonding Wave Propagation Theory)</span></strong>으로 설명된다(Fig.3).
+      패터닝된 웨이퍼에서 본딩 파동은 우선적으로 대칭 경로를 따라 전파하는 경향이 있다.
+    </p>
+
+    <div class="figure-box" id="fig3">
+      <div class="figure-header">Figure 3</div>
+      <div class="figure-title">비패턴 및 패턴 웨이퍼에서의 본딩 파동 전파 예시</div>
+      <div class="figure-caption">
+        <div class="subfig">
+          <span class="subfig-label">상단 패널 — 공정 개요:</span><br>
+          스트라이커(striker)를 웨이퍼 중심에 적용하면 본딩 파동이 방사형으로 퍼져나가는 모습을 화살표로 나타낸다.
+        </div>
+        <div class="subfig">
+          <span class="subfig-label">(좌) 비패턴 웨이퍼 (Non-patterned wafers):</span><br>
+          본딩 파동이 원형으로 균일하게 전파되며, 밝은 원형 프론트가 중심에서 가장자리로 확산되는 모습이 보인다.
+        </div>
+        <div class="subfig">
+          <span class="subfig-label">(우) 패턴 웨이퍼 (Patterned wafers):</span><br>
+          패턴으로 인해 파동 전파가 <strong>비대칭적 경로</strong>를 선택하며, 파동 프론트 형상이 원형에서 벗어나 사각형에 가까운 형태로 바뀐다. 이것이 보정 후에도 잔류하는 독특한 오버레이 핑거프린트의 원인이다.
+        </div>
+        <div class="figure-message">
+          ▶ 패턴 웨이퍼에서의 비균일 본딩 파동 전파가 복잡한 오버레이 핑거프린트를 생성하며,
+          이를 효과적으로 모델링하기 위해 제르니케 다항식이 도입된다.
+        </div>
+      </div>
+    </div>
+
+    <p>
+      본딩 후 오버레이 성능은 본딩 레시피 파라미터 조정으로 어느 정도 개선 가능하지만,
+      일부 소자 통합에서는 본딩 이후에도 후면 공정(backside processing)이 지속된다.
+      이 경우 후면의 새 리소그래피 레이어와 전면 인쇄 레이어 사이의 오버레이를 측정할 때
+      <strong>본딩 유발 오버레이 핑거프린트가 두드러지며, 사양을 만족시키기 매우 어렵다.</strong>
+      본 연구는 후면 웨이퍼 공정 환경에서 고수율 소자를 달성하기 위한 가장 효과적인 보정 모델을 규명하는 데 중점을 둔다.
+    </p>
+  </section>
+
+  <!-- ── Model Optimization ── -->
+  <section id="model">
+    <h2>2. 모델 최적화 및 결과</h2>
+
+    <h3 id="cpe-limit">2.1 CPE 보정의 한계</h3>
+
+    <p>
+      본딩 후 데이터에서 관찰되는 <strong>고차 핑거프린트</strong>를 보정할 때,
+      리소그래퍼들은 일반적으로 <span class="term">노출별 보정 (Correction Per Exposure, CPE)</span>을 사용한다.
+      CPE 모델의 정확도는 <strong>각 필드 내 측정점 수에 직접적으로 비례</strong>하며, 이는 제품의 계측 비용에 영향을 준다.
+    </p>
+
+    <p>
+      <span class="hl-yellow">필드당 4점의 계측 레이아웃</span>으로 본딩 유발 핑거프린트를 설명하고
+      CPE 보정의 완전한 정확도를 가능하게 하는 외삽(extrapolation) 모델을 개발하였다.
+    </p>
+
+    <div class="figure-box" id="fig4">
+      <div class="figure-header">Figure 4</div>
+      <div class="figure-title">희박 샘플링 시 웨이퍼 엣지에서의 CPE 보정 한계</div>
+      <div class="figure-caption">
+        <div class="subfig">
+          <span class="subfig-label">(좌) 10파라미터 모델 잔류 오차 (10Par Model Residual):</span><br>
+          웨이퍼 중심부보다 <strong>엣지 영역에서 큰 오버레이 벡터</strong>가 관찰된다. 핑크색 음영은 CPE 보정이 적용되는 영역을 나타낸다.
+        </div>
+        <div class="subfig">
+          <span class="subfig-label">(우) CPE 보정 후 잔류 오차 (Residuals post CPE correction):</span><br>
+          필드당 4점의 <span class="term">CPE 6파라미터 모델 (CPE 6par)</span>을 적용했으나, 필드가 불완전한 웨이퍼 엣지에서는 2파라미터 모델(평행이동만)로 다운그레이드되어 <strong>엣지의 큰 잔류 벡터가 여전히 남는다.</strong>
+        </div>
+        <div class="figure-message">
+          ▶ 희박 계측 레이아웃에서 CPE 6파라미터 모델은 웨이퍼 엣지 부분 필드에서 제대로 동작하지 않으며,
+          이를 극복하기 위해 제르니케 다항식 기반 외삽이 도입된다.
+        </div>
+      </div>
+    </div>
+
+    <h3 id="zernike-intro">2.2 제르니케 다항식 도입</h3>
+
+    <p>
+      웨이퍼 엣지에서의 보정 효율 손실을 방지하기 위해 다양한 모델을 평가한 결과,
+      <strong>웨이퍼 전면에 걸쳐 방사 축과 접선 축의 변동으로 설명되는 원판 형태의 대칭 핑거프린트에</strong>
+      <span class="term">제르니케 다항식 (Zernike Polynomials)</span> 적용이 최적임을 확인하였다.
+    </p>
+
+    <div class="figure-box" id="fig5">
+      <div class="figure-header">Figure 5</div>
+      <div class="figure-title">다양한 제르니케 모델 vs. CPE 6파라미터 비교</div>
+      <div class="figure-caption">
+        <div class="subfig">
+          <span class="subfig-label">표 구성 — 행 (처리 단계):</span><br>
+          ① <strong>Virtual OVL</strong>: 희박 계측 데이터로부터 제르니케 모델을 피팅한 후 고밀도 가상 격자에 투영한 결과<br>
+          ② <strong>CPE 6파라미터 변환 (Translation to CPE 6Par)</strong>: 가상 OVL을 스캐너에서 사용 가능한 CPE 6Par 입력으로 변환<br>
+          ③ <strong>보정 후 잔류율 (Residuals post correction)</strong>: 각 모델의 보정 효율(%)
+        </div>
+        <div class="subfig">
+          <span class="subfig-label">열 — 평가된 모델들:</span><br>
+          <strong>Zernike A~F</strong>: 다양한 제르니케 분해 방식 (Fringe, Noll 등 포함)<br>
+          <strong>CPE 6Par</strong>: 기존 직접 CPE 방식
+        </div>
+        <div class="subfig">
+          <span class="subfig-label">핵심 결과 — 잔류율 (낮을수록 우수):</span><br>
+          Zernike A: -45% | Zernike B: -42% | Zernike C: -46%<br>
+          Zernike D: -54% | <span class="hl-yellow">Zernike E: -77%</span> | Zernike F: -62%<br>
+          CPE 6Par (직접): -69%
+        </div>
+        <div class="figure-message">
+          ▶ 최고 성능의 제르니케 분해(Zernike E, -77%)는 기존 CPE 6Par(-69%) 대비 우수한 보정 성능을 보이며,
+          제르니케 모델이 가상 OVL을 통해 CPE의 입력을 향상시킬 수 있음을 입증한다.
+        </div>
+      </div>
+    </div>
+
+    <h3 id="residuals">2.3 잔류 오버레이 분석 및 복합 보정</h3>
+
+    <div class="figure-box" id="fig6">
+      <div class="figure-header">Figure 6</div>
+      <div class="figure-title">CPE 6파라미터 보정 후 잔류 vs. 제르니케 보정 후 잔류 — 웨이퍼 맵 및 방사형 플롯</div>
+      <div class="figure-caption">
+        <div class="subfig">
+          <span class="subfig-label">(좌) 직접 CPE 잔류 맵 (-69%):</span><br>
+          핑크색 배경. 웨이퍼 엣지에서 큰 벡터가 잔류하며, 분산된 점들이 산포도에서 넓게 분포한다.
+        </div>
+        <div class="subfig">
+          <span class="subfig-label">(중앙) 제르니케 기반 CPE 가상맵 (-77%):</span><br>
+          초록색 배경. 엣지 성능이 개선되었으나, <strong>주황색 원으로 표시된 웨이퍼 내부 3개 영역에 국소적 핑거프린트가 잔류</strong>한다. 이 위치는 <span class="term">본더 툴 핀 (Bonder Tool Pins)</span>에 해당한다.
+        </div>
+        <div class="subfig">
+          <span class="subfig-label">(우) 제르니케 + 정밀 CPE 6파라미터 복합 보정 (-85%):</span><br>
+          회색 배경. 핀 위치의 국소 핑거프린트까지 제거되어 웨이퍼 전면에 걸쳐 균일하게 낮은 잔류 오차를 보인다.
+        </div>
+        <div class="figure-message">
+          ▶ 제르니케 보정만으로는 본더 핀 위치의 국소 핑거프린트를 제거할 수 없으나,
+          <strong>제르니케 + 정밀 CPE 6파라미터의 복합 보정이 웨이퍼 중심부와 엣지 모두에서 최적 성능을 달성한다.</strong>
+        </div>
+      </div>
+    </div>
+
+    <div class="result-box">
+      <div class="result-label">📊 핵심 결과</div>
+      <strong>제르니케 기반 CPE + 정밀 CPE 6파라미터 복합 서브레시피</strong>를 적용하면
+      10파라미터 선형 모델 단독 대비 <span class="hl-yellow">오버레이 잔류 오차 85% 감소</span>를 달성한다.
+    </div>
+
+    <h3 id="variability">2.4 변동성 예산 분석</h3>
+
+    <p>
+      평균 핑거프린트가 제르니케와 정밀 CPE의 이중층 모델링으로 대부분 보정된 이후,
+      남은 과제는 <strong>웨이퍼 간(wafer-to-wafer) 및 로트 간(lot-to-lot) 변동성</strong>이다.
+    </p>
+
+    <div class="figure-box" id="fig7">
+      <div class="figure-header">Figure 7</div>
+      <div class="figure-title">다양한 보정 조건에서의 오버레이 변동성 예산 분석 (20로트 기준)</div>
+      <div class="figure-caption">
+        <div class="subfig">
+          <span class="subfig-label">색상 코드:</span><br>
+          🔵 파란색 — 평균 CPE (Average CPE) 기여분<br>
+          🔴 빨간색 — 로트 간 CPE (Lot to Lot CPE) 기여분<br>
+          🟡 노란색 — 웨이퍼 간 CPE (Wafer to Wafer CPE) 기여분
+        </div>
+        <div class="subfig">
+          <span class="subfig-label">3가지 조건 비교 (X, Y 방향 각각):</span><br>
+          ① <strong>POR (현행 프로세스)</strong>: 총 버짓이 가장 크며 평균 CPE 기여분이 지배적<br>
+          ② <strong>Zernike + CPE</strong>: 평균 CPE 기여분이 크게 감소하나 로트 간·웨이퍼 간 변동성은 여전히 유의미하게 잔류<br>
+          ③ <strong>HOWA3 + Zernike + CPE</strong>: 로트 간 및 웨이퍼 간 변동성까지 추가 감소
+        </div>
+        <div class="figure-message">
+          ▶ 제르니케 + CPE만으로는 로트 간·웨이퍼 간 변동성을 충분히 제어하지 못하며,
+          웨이퍼 단위로 정렬을 수행하는 <strong>고차 웨이퍼 정렬 (HOWA3)</strong>의 추가가 필요함을 보여준다.
+        </div>
+      </div>
+    </div>
+
+    <h3 id="howa3">2.5 HOWA3와의 결합</h3>
+
+    <p>
+      <span class="hl-yellow">3차 다항식 기반 고차 웨이퍼 정렬 모델 (High-Order Wafer Alignment model 3rd order, HOWA3)</span>을
+      스캐너에 구현하면 웨이퍼별 정렬이 수행되므로 로트 간 및 웨이퍼 간 변동성을 크게 줄일 수 있다.
+      단, HOWA3는 노광 전 스캐너 정렬 단계에서 적용되므로 <strong>오버레이 측정 시 파악된 핑거프린트 형상을 변화</strong>시킨다.
+      따라서 제르니케 및 CPE 보정의 재평가가 필요하다.
+    </p>
+
+    <div class="figure-box" id="fig8">
+      <div class="figure-header">Figure 8</div>
+      <div class="figure-title">HOWA3 적용 후 제르니케 모델의 형상 평가</div>
+      <div class="figure-caption">
+        <div class="subfig">
+          <span class="subfig-label">상단 행 — HOWA3 미적용:</span><br>
+          10Par 잔류 → 제르니케 모델(별 형태의 고차 패턴) → 잔류 post Zernike 순서. 최종 잔류율 <strong>-77%</strong>.
+        </div>
+        <div class="subfig">
+          <span class="subfig-label">하단 행 — HOWA3 적용 후:</span><br>
+          HOWA3를 먼저 적용하면 10Par 잔류 형상이 변화한다. 이후 제르니케 모델의 형상도 달라지지만 결과적으로 동일한 <strong>-77%</strong> 잔류율을 달성한다.
+        </div>
+        <div class="subfig">
+          <span class="subfig-label">= 기호의 의미:</span><br>
+          HOWA3 유무와 무관하게 제르니케 보정 후 잔류율이 동일(-77%)함을 나타낸다. 단, HOWA3는 웨이퍼 간 변동성 감소에 추가로 기여한다.
+        </div>
+        <div class="figure-message">
+          ▶ HOWA3 적용은 제르니케 모델의 형상을 변화시키지만 제르니케의 보정 효율(-77%)을 해치지 않는다.
+          HOWA3의 효과는 정렬 마크 수와 위치에 의존하며, 마크 수 증가는 처리량(throughput)과의 트레이드오프를 수반한다.
+        </div>
+      </div>
+    </div>
+
+    <div class="result-box">
+      <div class="result-label">✅ 최적 보정 방안 요약</div>
+      본 연구는 <strong>HOWA3 (웨이퍼 수준) + 제르니케 CPE (로트/척 수준) + 정밀 CPE 6파라미터</strong>의
+      3단계 복합 보정 방안이 본딩 유발 오버레이 핑거프린트 대응에 가장 효과적임을 제안한다.
+    </div>
+
+    <h3 id="recipe">2.6 본딩 레시피별 분석 및 런-투-런 제어</h3>
+
+    <p>
+      3단계 보정 방안이 확립된 후, 다음 단계는
+      <span class="term">런-투-런 제어 (Run-to-Run Control, R2R)</span> 맥락(context) 설정을 위한 최적 보정 기준점을 결정하는 것이다.
+      <span class="hl-blue">각 본더 장비와 본딩 레시피는 고유한 핑거프린트를 가진다.</span>
+    </p>
+
+    <div class="figure-box" id="fig11">
+      <div class="figure-header">Figure 11</div>
+      <div class="figure-title">두 본더(Bonder A, Bonder B)의 HOWA3 후 제르니케 모델 비교</div>
+      <div class="figure-caption">
+        <div class="subfig">
+          <span class="subfig-label">각 패널 구성:</span><br>
+          좌측: 방사형 플롯 (웨이퍼 반경에 따른 오버레이 크기 분포)<br>
+          우측: 웨이퍼 맵 (색상 및 벡터로 표현된 제르니케 모델 성분)
+        </div>
+        <div class="subfig">
+          <span class="subfig-label">Bonder A vs. Bonder B:</span><br>
+          두 본더의 제르니케 모델 형상이 뚜렷이 다르다. 방사형 플롯에서 파동 패턴의 진폭과 주기, 웨이퍼 맵의 색상 분포가 상이하다. 이는 각 장비가 <strong>고유한 기계적 특성</strong>을 가짐을 의미한다.
+        </div>
+        <div class="figure-message">
+          ▶ 제르니케 모델은 제품 레이아웃이나 필드 크기에 무관한 전역적 웨이퍼 모델이므로,
+          동일한 보정 맥락(본딩 장비 + 레시피)을 공유하는 <strong>신규 제품의 첫 번째 런(run)에도 즉시 적용 가능</strong>하다.
+          이는 CPE 단독 사용 시 필요한 제품별 학습(learning) 기간을 제거하는 핵심 장점이다.
+        </div>
+      </div>
+    </div>
+
+    <div class="figure-box" id="fig12">
+      <div class="figure-header">Figure 12</div>
+      <div class="figure-title">제르니케 + CPE 이중층 보정의 런-투-런 기준점 초기화 방안</div>
+      <div class="figure-caption">
+        <div class="subfig">
+          <span class="subfig-label">보정 기준 맥락: Bonder B / Recipe A</span><br>
+          세로축은 시간(Time), 가로축은 두 단계(Zernike 학습·적용, CPE 학습·적용)를 나타낸다.
+        </div>
+        <div class="subfig">
+          <span class="subfig-label">제품 A (처음 진입):</span><br>
+          <strong>제르니케 학습(Zernike Learning)</strong>을 수행하여 해당 맥락의 기준 모델을 생성한다.
+          이후 같은 맥락의 제품 B, C는 <strong>제르니케 적용 + R2R 업데이트</strong>로 즉시 혜택을 받는다.
+        </div>
+        <div class="subfig">
+          <span class="subfig-label">CPE 학습:</span><br>
+          각 제품은 개별적으로 CPE 학습을 수행하지만, 제르니케 모델이 이미 큰 핑거프린트를 보정하므로 CPE의 부담이 감소한다.
+        </div>
+        <div class="figure-message">
+          ▶ 제르니케 모델의 전역적 특성 덕분에 새 제품 도입 시 재작업(rework)이나 별도의 CPE 학습 없이
+          기존 맥락의 보정을 즉시 활용할 수 있어 <strong>공정 유연성이 크게 향상</strong>된다.
+        </div>
+      </div>
+    </div>
+
+    <div class="figure-box" id="fig13">
+      <div class="figure-header">Figure 13</div>
+      <div class="figure-title">9가지 본딩 레시피에 걸친 제르니케 거동 및 모델 성분 분석</div>
+      <div class="figure-caption">
+        <div class="subfig">
+          <span class="subfig-label">상단 — 웨이퍼 맵 (POR, A~H):</span><br>
+          각 레시피에 따른 제르니케 모델의 형상 차이. 색상 분포와 대칭 패턴이 레시피마다 다르다.
+        </div>
+        <div class="subfig">
+          <span class="subfig-label">하단 — 모델 성분 막대그래프:</span><br>
+          🔴 빨간색 — HOWA3 모델 성분 (3시그마)<br>
+          🟡 노란색 — 제르니케 모델 성분<br>
+          🟢 초록색 — 정밀 CPE 6파라미터 성분
+        </div>
+        <div class="subfig">
+          <span class="subfig-label">최적 레시피 선정 기준:</span><br>
+          <span class="hl-blue">HOWA3 성분이 클수록 유리하다</span>. HOWA3는 웨이퍼 단위 실시간 제어로 변동성을 줄이기 때문이다.
+          반면 CPE 성분이 크면 필드 간 렌즈 조정으로 인한 <strong>처리량 손실</strong>을 초래한다.
+        </div>
+        <div class="figure-message">
+          ▶ 모든 9가지 레시피에서 제르니케 모델이 유효하였으며, 모델 성분 분석이 최적 리소그래피 친화적(litho-friendly) 레시피 선정의 정량적 기준을 제공한다.
+        </div>
+      </div>
+    </div>
+
+    <p>
+      스캐너 보정 후 최소 잔류 오버레이를 달성하려면,
+      입력되는 본딩 후 왜곡이 최소화되어야 할 뿐 아니라,
+      더 중요하게는 <strong>리소그래피 모델로 가장 잘 보정될 수 있는 형태(litho-friendly)</strong>여야 한다.
+      <span class="hl-blue">본딩 직후 최적 오버레이를 제공하는 레시피가 리소그래피 보정 후 최선의 결과를 보장하지는 않는다.</span>
+    </p>
+  </section>
+
+  <!-- ── Validation ── -->
+  <section id="validation">
+    <h2>3. 모델 검증 및 맥락 의존성</h2>
+
+    <p>
+      제르니케 다항식을 이용한 외삽이 실제 본딩 핑거프린트를 정확하게 표현한다는 가설을 검증하기 위해,
+      새 제품 레티클에 <strong>인트라필드 계측 타겟(intrafield metrology targets)</strong>을 추가 설계하였다.
+      이를 통해 고차 CPE 모델 사용 및 제르니케 사용 가정의 직접 검증이 가능해졌다.
+    </p>
+
+    <div class="figure-box" id="fig9">
+      <div class="figure-header">Figure 9</div>
+      <div class="figure-title">희박 계측 기반 제르니케 모델 vs. 고밀도 측정 결과 비교</div>
+      <div class="figure-caption">
+        <div class="subfig">
+          <span class="subfig-label">상단 행 — 희박 오버레이 (Sparse Overlay) 기반:</span><br>
+          필드 네 모서리 4점 데이터로 제르니케 모델을 피팅한 후, 고밀도 레이아웃에 적용. 결과: <span class="hl-yellow">-65% 개선</span>
+        </div>
+        <div class="subfig">
+          <span class="subfig-label">하단 행 — 고밀도 오버레이 (Dense Overlay) 기반:</span><br>
+          고밀도 계측 데이터로 직접 제르니케 모델 피팅 후 적용. 결과: <span class="hl-yellow">-73% 개선</span>
+        </div>
+        <div class="subfig">
+          <span class="subfig-label">핵심 비교:</span><br>
+          희박 계측 기반 제르니케 모델(-65%)은 고밀도 직접 모델링(-73%)보다 단 <strong>8%p 낮은 성능</strong>으로, 실제 오버레이의 가장 근접한 표현인 고밀도 레이아웃에서도 유효하다.
+        </div>
+        <div class="figure-message">
+          ▶ <strong>제르니케 모델은 과적합(overfitting) 없이</strong> 희박 샘플링에서도 본딩 후 오버레이의 고유한 형상을 정확히 포착한다.
+          이는 운영 환경에서의 계측 비용 절감과 성능 간 균형의 타당성을 뒷받침한다.
+        </div>
+      </div>
+    </div>
+
+    <div class="figure-box" id="fig10">
+      <div class="figure-header">Figure 10</div>
+      <div class="figure-title">제르니케 + CPE vs. 완화된 폴백 CPE 비교 — 희박 데이터 모델링 후 고밀도 적용</div>
+      <div class="figure-caption">
+        <div class="subfig">
+          <span class="subfig-label">비교 구조 (4가지 경로):</span><br>
+          고밀도 OVL 데이터 + HOWA3 → ① Zernike + CPE6 → Dense OVL Residuals 1: <span class="hl-yellow">-73%</span><br>
+          고밀도 OVL 데이터 + HOWA3 → ② CPE6 Relaxed Fallback → Dense OVL Residuals 2: <strong>-73%</strong><br>
+          희박 OVL 데이터 + HOWA3 → ③ Zernike + CPE6 → Dense OVL Residuals 3: <span class="hl-yellow">-65%</span><br>
+          희박 OVL 데이터 + HOWA3 → ④ CPE6 Relaxed Fallback → Dense OVL Residuals 4: <strong>-56%</strong>
+        </div>
+        <div class="subfig">
+          <span class="subfig-label">완화된 폴백 CPE (Relaxed Fallback CPE):</span><br>
+          웨이퍼 엣지 부분 필드에서도 추가 파라미터를 도입하여 4점 미만의 측정만으로 CPE 6파라미터 모델을 적용하는 산업계 사용 방식.
+          그러나 올바른 외삽 알고리즘 대비 <strong>더 높은 위험</strong>을 수반한다.
+        </div>
+        <div class="figure-message">
+          ▶ 동일한 고밀도 계측에서는 두 방법이 동등하지만, <strong>희박 계측 상황에서는 제르니케 외삽이 약 10%p 우수한 성능</strong>을 보인다.
+          희박 계측만 가능한 환경에서 제르니케 외삽은 보정 잠재력을 최대화하는 더 안전하고 효과적인 접근이다.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Conclusion ── -->
+  <section id="conclusion">
+    <div class="conclusion-card">
+      <h2>4. 결론</h2>
+
+      <p>
+        본 연구는 <strong>제르니케 다항식을 이용한 본딩 유발 오버레이 핑거프린트 모델링</strong>이
+        특히 계측 샘플링이 희박한 환경에서 전통적인 CPE 방식 대비 뚜렷한 우위를 지님을 입증하였다.
+      </p>
+
+      <p>
+        제르니케 기반 접근법은 하이브리드 본딩 공정으로 유발되는 <span class="hl-yellow">고도로 대칭적인 오버레이 왜곡</span>을
+        정확히 포착하며, 기존 CPE 모델이 측정점 부족으로 한계를 보이는 <strong>웨이퍼 엣지</strong>에서 특히 효과적이다.
+      </p>
+
+      <p>
+        제르니케 모델링에 정밀 CPE 및 고차 웨이퍼 정렬(HOWA3)을 결합한
+        <strong>견고한 3단계 보정 방안</strong>은 선형 모델 대비 <span class="hl-yellow">오버레이 잔류 오차를 최대 85% 감소</span>시킨다.
+      </p>
+
+      <p>
+        희박 및 고밀도 계측 레이아웃 모두에서의 검증 결과, 제르니케 모델은 데이터를 과적합하지 않으며
+        다양한 본딩 장비와 레시피에 걸쳐 유효하다. 또한 <span class="hl-blue">제품 레이아웃이나 필드 크기에 무관한 전역적 특성</span> 덕분에
+        런-투-런 제어의 보정 기준점을 효율적으로 초기화할 수 있어 공정 유연성이 향상된다.
+      </p>
+
+      <p>
+        다양한 본딩 레시피 분석 결과, 3단계 보정 방안은 광범위한 본딩 핑거프린트에 걸쳐 일관되게 잔류 오버레이를 최소화한다.
+        웨이퍼 수준 보정(HOWA3)을 로트 수준 보정(CPE)보다 우선시하면 웨이퍼 간 변동성을 추가로 줄이고 처리량을 개선할 수 있다.
+      </p>
+    </div>
+  </section>
+
+  <!-- ── Correction Summary Table ── -->
+  <section style="margin-top: 44px;">
+    <h2>보정 방안 종합 비교</h2>
+    <table class="scheme-table">
+      <thead>
+        <tr>
+          <th>보정 단계</th>
+          <th>방법</th>
+          <th>적용 수준</th>
+          <th>잔류 감소율</th>
+          <th>특징</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1단계</td>
+          <td>10파라미터 선형 모델 (POR)</td>
+          <td>로트</td>
+          <td>기준(0%)</td>
+          <td>기존 표준 방법; 엣지 미보정</td>
+        </tr>
+        <tr>
+          <td>2단계</td>
+          <td>CPE 6파라미터 직접 적용</td>
+          <td>노출별</td>
+          <td>-69%</td>
+          <td>희박 샘플링 엣지에서 한계</td>
+        </tr>
+        <tr>
+          <td>3단계</td>
+          <td>제르니케 + CPE 6파라미터</td>
+          <td>로트/척</td>
+          <td>-77%~-85%</td>
+          <td>엣지 성능 개선; 핀 위치 잔류</td>
+        </tr>
+        <tr>
+          <td>4단계 (최적)</td>
+          <td>HOWA3 + 제르니케 + 정밀 CPE</td>
+          <td>웨이퍼+로트</td>
+          <td><strong>-85%</strong></td>
+          <td>변동성까지 제어; 처리량 트레이드오프</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ── References ── -->
+  <section id="references" class="references">
+    <h2>참고문헌</h2>
+    <p class="ref-item">
+      [1] John H. Lau, "State of the Art of Cu-Cu Hybrid Bonding,"
+      <em>IEEE Transactions on Components, Packaging and Manufacturing Technology</em>, Vol. 14, Issue 3 (2024).
+    </p>
+    <p class="ref-item">
+      [2] Emilie Deloffre, Bassel Ayoub, Sandrine Lhostis, et al., "Hybrid bonding for 3D applications: improvements and limitations,"
+      <em>ECS Transactions</em>, vol. 112, no. 3, p. 63 (2023).
+    </p>
+    <p class="ref-item">
+      [3] Nathan Ip, M. Belyansky, C. Netzband et al., "Overlay performance in permanent bonded wafer integration schemes,"
+      <em>SPIE Proceedings</em> Vol. 12496, Metrology, Inspection, and Process Control XXXVII; 1249618 (2023).
+    </p>
+    <p class="ref-item">
+      [4] R. van Haren, S. Li, B. Minghetti et al., "Enabling layer transfer and back-side power delivery network applications by wafer bonding and scanner correction optimizations,"
+      <em>SPIE Proceedings</em> Vol. 12496, Metrology, Inspection, and Process Control XXXVII; 124962C (2023).
+    </p>
+  </section>
+
+  <footer>
+    AUROS 인턴십 프로젝트 | JCha69/Auros-intern · Section 4: 웨이퍼 본딩 및 오버레이 계측<br>
+    원문: SPIE Proc. Vol. 13981, 139810L (2026) · 한국어 번역 요약본
+  </footer>
+
+</div>
+</body>
+</html>
