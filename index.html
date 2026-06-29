@@ -1,236 +1,66 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AUROS 인턴 — 논문 번역 아카이브</title>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;600;700&family=Noto+Sans+KR:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>AUROS 인턴십 — 반도체 논문 한국어 번역 아카이브</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&family=Noto+Serif+KR:wght@400;600&display=swap" rel="stylesheet"/>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --bg: #fafaf8;
-      --surface: #ffffff;
-      --accent: #1a4a7a;
-      --accent-light: #e8f0f8;
-      --accent-mid: #2d6ca8;
-      --text-main: #1e1e1e;
-      --text-sub: #555;
-      --border: #dde3ea;
-    }
-
-    body {
-      background: var(--bg);
-      color: var(--text-main);
-      font-family: 'Noto Sans KR', sans-serif;
-      max-width: 860px;
-      margin: 0 auto;
-      padding: 48px 28px 80px;
-    }
-
-    /* ── Header ── */
-    .site-header {
-      border-top: 4px solid var(--accent);
-      padding-top: 32px;
-      margin-bottom: 48px;
-    }
-    .site-label {
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.15em;
-      color: var(--accent-mid);
-      text-transform: uppercase;
-      margin-bottom: 12px;
-    }
-    .site-title {
-      font-family: 'Noto Serif KR', serif;
-      font-size: 28px;
-      font-weight: 700;
-      color: var(--accent);
-      line-height: 1.3;
-      margin-bottom: 10px;
-    }
-    .site-desc {
-      font-size: 14px;
-      color: var(--text-sub);
-      line-height: 1.7;
-    }
-
-    /* ── Section ── */
-    .section {
-      margin-bottom: 48px;
-    }
-    .section-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 16px;
-      padding-bottom: 10px;
-      border-bottom: 2px solid var(--accent-light);
-    }
-    .section-title {
-      font-family: 'Noto Serif KR', serif;
-      font-size: 17px;
-      font-weight: 700;
-      color: var(--accent);
-    }
-    .section-count {
-      font-size: 11px;
-      font-weight: 600;
-      background: var(--accent-light);
-      color: var(--accent-mid);
-      padding: 2px 8px;
-      border-radius: 10px;
-    }
-
-    /* ── Paper card ── */
-    .paper-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-left: 4px solid var(--accent-mid);
-      border-radius: 4px;
-      padding: 18px 22px;
-      margin-bottom: 12px;
-      text-decoration: none;
-      display: block;
-      transition: border-left-color 0.15s, box-shadow 0.15s;
-    }
-    .paper-card:hover {
-      border-left-color: var(--accent);
-      box-shadow: 0 2px 12px rgba(26,74,122,0.1);
-    }
-    .paper-title-kr {
-      font-family: 'Noto Serif KR', serif;
-      font-size: 15px;
-      font-weight: 600;
-      color: var(--accent);
-      margin-bottom: 6px;
-      line-height: 1.5;
-    }
-    .paper-title-en {
-      font-size: 12px;
-      color: var(--text-sub);
-      font-style: italic;
-      margin-bottom: 10px;
-      line-height: 1.5;
-    }
-    .paper-meta {
-      display: flex;
-      gap: 16px;
-      flex-wrap: wrap;
-    }
-    .meta-tag {
-      font-size: 11.5px;
-      color: var(--text-sub);
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-    .meta-tag span {
-      color: var(--accent-mid);
-      font-weight: 500;
-    }
-
-    /* ── Stats bar ── */
-    .stats-bar {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-bottom: 40px;
-    }
-    .stat-item {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-top: 3px solid var(--accent);
-      border-radius: 3px;
-      padding: 16px;
-      text-align: center;
-    }
-    .stat-value {
-      font-family: 'Noto Serif KR', serif;
-      font-size: 28px;
-      font-weight: 700;
-      color: var(--accent);
-    }
-    .stat-label {
-      font-size: 11.5px;
-      color: var(--text-sub);
-      margin-top: 4px;
-    }
-
-    /* ── Footer ── */
-    .site-footer {
-      margin-top: 60px;
-      padding-top: 20px;
-      border-top: 1px solid var(--border);
-      font-size: 11.5px;
-      color: #999;
-      text-align: center;
-    }
-
-    @media (max-width: 600px) {
-      body { padding: 24px 16px 60px; }
-      .stats-bar { grid-template-columns: 1fr; }
-    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Noto Sans KR',sans-serif;background:#f5f7fa;color:#1a1a1a;min-height:100vh}
+    .site-header{background:#0e2a47;padding:36px 40px 32px}
+    .header-inner{max-width:900px;margin:0 auto}
+    .site-label{font-size:11px;font-weight:600;letter-spacing:.15em;color:#6fa8d4;text-transform:uppercase;margin-bottom:10px}
+    .site-title{font-family:'Noto Serif KR',serif;font-size:26px;font-weight:600;color:#fff;line-height:1.35;margin-bottom:8px}
+    .site-subtitle{font-size:13.5px;color:#8fb8d8;line-height:1.6}
+    .main{max-width:900px;margin:0 auto;padding:44px 40px 80px}
+    .section-group{margin-bottom:48px}
+    .section-header{display:flex;align-items:center;gap:14px;margin-bottom:20px;padding-bottom:12px;border-bottom:2px solid #1a4a7a}
+    .section-badge{background:#1a4a7a;color:#fff;font-size:11px;font-weight:700;padding:4px 11px;border-radius:20px}
+    .section-title{font-size:16px;font-weight:700;color:#0e2a47}
+    .section-count{margin-left:auto;font-size:12px;color:#888}
+    .paper-list{display:flex;flex-direction:column;gap:14px}
+    .paper-card{display:block;background:#fff;border:1px solid #dce6f0;border-radius:10px;padding:22px 26px;text-decoration:none;color:inherit;transition:all .18s}
+    .paper-card:hover{border-color:#1a4a7a;box-shadow:0 4px 18px rgba(26,74,122,.12);transform:translateY(-2px)}
+    .paper-title-kr{font-family:'Noto Serif KR',serif;font-size:15.5px;font-weight:600;color:#0e2a47;line-height:1.45;margin-bottom:14px}
+    .paper-meta{display:flex;flex-wrap:wrap;gap:8px}
+    .meta-tag{display:inline-flex;align-items:center;gap:4px;background:#f0f4fa;border:1px solid #d0dce9;border-radius:5px;padding:3px 9px;font-size:11.5px;color:#555}
+    .meta-tag span{font-weight:500}
+    .site-footer{background:#0e2a47;color:#6fa8d4;font-size:12px;text-align:center;padding:20px}
+    .updated{font-size:11px;color:#aaa;text-align:right;margin-bottom:20px}
   </style>
 </head>
 <body>
-
-<div class="site-header">
-  <div class="site-label">AUROS 인턴십 · 논문 번역 아카이브</div>
-  <div class="site-title">반도체 계측 논문<br>한국어 번역 모음</div>
-  <div class="site-desc">ASML, SPIE 등 주요 학술지의 반도체 공정 및 계측 관련 논문을 한국어로 번역한 아카이브입니다.<br>각 논문을 클릭하면 번역된 전문을 확인할 수 있습니다.</div>
-</div>
-
-<!-- Stats -->
-<div class="stats-bar">
-  <div class="stat-item">
-    <div class="stat-value">2</div>
-    <div class="stat-label">번역 완료 논문</div>
+<header class="site-header">
+  <div class="header-inner">
+    <div class="site-label">AUROS 인턴십 · P2 논문 번역 아카이브</div>
+    <div class="site-title">반도체 논문 한국어 번역 모음</div>
+    <div class="site-subtitle">반도체 공정 및 계측 관련 최신 학술 논문을 한국어로 번역하여 정리한 아카이브입니다.<br>총 2편 수록</div>
   </div>
-  <div class="stat-item">
-    <div class="stat-value">1</div>
-    <div class="stat-label">섹션</div>
-  </div>
-  <div class="stat-item">
-    <div class="stat-value">2026</div>
-    <div class="stat-label">최신 논문 연도</div>
-  </div>
-</div>
-
-<!-- Section 4 -->
-<div class="section">
-  <div class="section-header">
-    <div class="section-title">Section 4 — 웨이퍼 본딩 및 오버레이 계측</div>
-    <div class="section-count">2편</div>
-  </div>
-
-  <a class="paper-card" href="P2_Paper%20%EC%9A%94%EC%95%BD/Section%204/wafer-bonding-distortion-kr.html">
-    <div class="paper-title-kr">웨이퍼 본딩 유발 변형의 특성화 및 완화: 첨단 노드의 본딩 후 리소그래피 요건 충족을 위한 연구</div>
-    <div class="paper-title-en">Characterization and mitigation of wafer bonding-induced distortions to enable the post-bonding lithography requirements of advanced nodes</div>
-    <div class="paper-meta">
-      <div class="meta-tag">✍️ <span>van Dijk et al.</span></div>
-      <div class="meta-tag">📅 <span>2026</span></div>
-      <div class="meta-tag">🏛 <span>SPIE Proc. 13981</span></div>
-      <div class="meta-tag">🏷 <span>ASML · TEL · 오버레이 · BSPDN</span></div>
+</header>
+<main class="main">
+  <div class="updated">마지막 업데이트: 2026-06-29 15:20</div>
+  <div class="section-group">
+    <div class="section-header">
+      <span class="section-badge">Section 4</span>
+      <span class="section-title">웨이퍼 본딩 및 오버레이 계측</span>
+      <span class="section-count">논문 2편</span>
     </div>
-  </a>
-
-  <a class="paper-card" href="P2_Paper%20%EC%9A%94%EC%95%BD/Section%204/Advanced_overlay_metrology_W2W_hybrid_bonding_KR.html">
-    <div class="paper-title-kr">웨이퍼 간 하이브리드 본딩을 위한 고급 오버레이 계측</div>
-    <div class="paper-title-en">Advanced overlay metrology for wafer-to-wafer hybrid bonding</div>
-    <div class="paper-meta">
-      <div class="meta-tag">✍️ <span>Section 4 논문</span></div>
-      <div class="meta-tag">📅 <span>2026</span></div>
-      <div class="meta-tag">🏷 <span>오버레이 · 하이브리드 본딩</span></div>
-    </div>
-  </a>
-
-</div>
-
-<div class="site-footer">
-  AUROS 인턴십 논문 번역 아카이브 · JCha69/Auros-intern · GitHub Pages
-</div>
-
+    <div class="paper-list"><a class="paper-card" href="P2_Paper%20%EC%9A%94%EC%95%BD/Section%204/Advanced_overlay_metrology_W2W_hybrid_bonding_KR.html">
+        <div class="paper-title-kr">3D 집적화를 위한 웨이퍼-투-웨이퍼 하이브리드 본딩의고도화된 오버레이 계측</div>
+        <div class="paper-meta">
+          <div class="meta-tag">📅 <span>2026</span></div>
+          <div class="meta-tag">🏷 <span>Section 4</span></div>
+        </div>
+      </a><a class="paper-card" href="P2_Paper%20%EC%9A%94%EC%95%BD/Section%204/s4_zernike-overlay-fingerprint_KR.html">
+        <div class="paper-title-kr">제르니케 다항식을 이용한본딩 유발 오버레이 핑거프린트 모델링</div>
+        <div class="paper-meta">
+          <div class="meta-tag">📅 <span>2026</span></div>
+          <div class="meta-tag">🏷 <span>Section 4</span></div>
+        </div>
+      </a></div>
+  </div>
+</main>
+<footer class="site-footer">AUROS 인턴십 논문 번역 아카이브 · JCha69/Auros-intern · GitHub Pages</footer>
 </body>
 </html>
