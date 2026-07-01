@@ -317,6 +317,21 @@
       body { padding: 24px 16px 60px; }
       .result-box { grid-template-columns: 1fr; }
     }
+  .transcript-block {
+    border-left: 3px solid #1a4a7a;
+    padding: 12px 16px;
+    margin: 16px 0;
+    background: #f8fbff;
+    border-radius: 0 6px 6px 0;
+  }
+  .transcript-time {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 11px;
+    color: #1a4a7a;
+    font-weight: 700;
+    margin-bottom: 6px;
+    letter-spacing: 0.05em;
+  }
   </style>
 </head>
 <body>
@@ -752,5 +767,70 @@
   번역 생성: P2_Paper_Summary 스킬 | 원문: SPIE Proc. 13981, 139810M (2026) | Leon van Dijk et al.
 </div>
 
+
+<section id="transcript" style="max-width:820px;margin:40px auto;padding:0 24px 60px;">
+<h2 style="font-family:'Noto Sans KR',sans-serif;font-size:19px;color:#1a4a7a;border-bottom:1px solid #ddd;padding-bottom:6px;margin-bottom:20px;">📢 발표자 전사문 번역</h2>
+<p style="font-family:'Noto Sans KR',sans-serif;font-size:13px;color:#666;margin-bottom:20px;">※ 발표자: Leon van Dijk (ASML) · Tokyo Electron과의 공동 연구</p>
+
+<div class="transcript-block">
+<div class="transcript-time">00:00</div>
+<p>발표 기회를 주셔서 감사합니다. ASML과 Tokyo Electron의 공동 저자들을 대표하여 발표합니다. 발표 구성은 웨이퍼 본딩과 리소그래피 도전 과제 소개, 스캐너 정렬 방법론을 활용한 본딩 유발 변형의 밀도 있는 특성화, 본딩 후 오버레이 성능에 대한 기여 분석, 그리고 결론으로 이루어집니다.</p>
+</div>
+
+<div class="transcript-block">
+<div class="transcript-time">00:29</div>
+<p>웨이퍼 본딩은 BiCMOS, 이미지 센서, 3D NAND 고용량 제조에서 이미 성공적으로 사용되고 있으며, 이제 첨단 DRAM 및 로직 노드 스케일링의 핵심 기술로 부상하고 있습니다. 특히 이 첨단 노드들에서 본딩 후 레이어의 오버레이 요구사항은 매우 엄격합니다. 5 nm 미만이 요구되며, 웨이퍼 본딩 공정은 이 요구사항을 충족하는 데 리소그래피에 중요한 도전 과제를 제기합니다.</p>
+</div>
+
+<div class="transcript-block">
+<div class="transcript-time">01:02</div>
+<p>두 웨이퍼가 처음에 직선 격자를 가진 비본딩 상태에서, 본딩 공정은 기계적 응력과 본딩 파 역학으로 인해 두 웨이퍼 모두에 변형을 유발합니다. 기판 제거 후 수송 레이어는 전체 변형을 담당하게 되며, 이 변형은 상당할 수 있습니다. 이 핑거프린트는 항상 완전히 보정 가능하지 않으며, 웨이퍼 대 웨이퍼 변동이 클 수 있습니다.</p>
+</div>
+
+<div class="transcript-block">
+<div class="transcript-time">02:27</div>
+<p>리소그래피 관점에서 원하는 것은 리소그래피 친화적인 핑거프린트입니다. 스캐너는 스테이지와 렌즈를 통해 특정 공간 주파수까지 고차원 보정이 가능합니다. 그러나 그 이상의 공간 주파수는 보정 불가능한 오류가 됩니다. 핑거프린트가 안정적이면 오버레이 계측을 통해 밀도 있게 측정하고 스캐너의 전체 보정 능력을 활용할 수 있지만, 웨이퍼 대 웨이퍼 변동이 있을 경우 정렬 시스템에 의존해야 합니다.</p>
+</div>
+
+<div class="transcript-block">
+<div class="transcript-time">04:09</div>
+<p>밀도 있는 특성화를 위해 캐리어 웨이퍼(산화층이 있는 기판)와 리드아웃 웨이퍼(SOI 기반, 정렬 마크가 실리콘층에 식각)를 사용했습니다. 본딩 전 스캐너로 정렬 마크를 읽어낸 후, 리드아웃 웨이퍼를 뒤집어 본딩하고 연삭과 식각으로 실리콘을 제거합니다. 후면에서 다시 정렬 읽기를 수행하여 본딩 유발 변형을 분리합니다.</p>
+</div>
+
+<div class="transcript-block">
+<div class="transcript-time">05:17</div>
+<p>4개 웨이퍼 쌍 본딩 결과, 선형 보정 제거 후 약 100 nm의 상당한 고차원 격자 변형이 남았습니다. 스캐너는 이미 약 900 pm의 매우 큰 스케일링을 보정하며, 이는 수송 레이어가 캐리어 웨이퍼 대비 웨이퍼 가장자리에서 약 1.4 µm 늘어난 것에 해당합니다. 웨이퍼 변형을 체계적(평균)과 웨이퍼 간 변동으로 분리한 결과, 본딩 보이드로 인한 큰 결함이 있는 웨이퍼를 제외하면 웨이퍼 간 변동은 3.4 nm였습니다.</p>
+</div>
+
+<div class="transcript-block">
+<div class="transcript-time">06:50</div>
+<p>EUV 스캐너(33-par CPE)와 첨단 이머전 스캐너(38-par CPE)의 보정 능력을 분석한 결과, 본딩 유발 변형 대부분을 보정할 수 있지만 일부 국소적 변형이 남습니다. 중앙의 스트라이커 시그니처, 로딩 핀으로 인한 3개 국소 변형, 링 형태 변형이 잔류합니다. 선형 정렬 후 웨이퍼 간 변동은 3.4 nm이며, RBF(방사 기저 함수 기반 온라인 모델)를 70개 정렬 마크로 적용하면 1.6 nm로 감소합니다.</p>
+</div>
+
+<div class="transcript-block">
+<div class="transcript-time">09:35</div>
+<p>이제 본딩 후 오버레이 성능을 살펴보겠습니다. Tokyo Electron이 개발한 테스트 차량을 사용하여 밀도 있는 오버레이 계측을 수행했습니다. 이는 패턴 웨이퍼가 캐리어 웨이퍼 위에 본딩된 BSPDN과 유사한 공정을 모사합니다. 약 86 nm의 예시 본딩 후 오버레이 측정에서 자가 보정 CPE 적용 시 중간 반경 주변의 링 시그니처가 명확히 나타납니다.</p>
+</div>
+
+<div class="transcript-block">
+<div class="transcript-time">10:45</div>
+<p>링 형태 변형은 본딩 전파 중 상단 웨이퍼의 굽힘 응력 증가에서 발생합니다. 상단 척 진공으로 유지되다가 스트라이커가 시작하면 본딩 파가 가장자리로 전파되면서 굽힘 응력이 증가하여 본딩 파 전파를 지연시킵니다. 이 링 변형은 상단 가장자리 진공에서 웨이퍼를 적시에 해제하는 본딩 레시피 최적화로 완화할 수 있습니다.</p>
+</div>
+
+<div class="transcript-block">
+<div class="transcript-time">12:57</div>
+<p>본딩 후 오버레이 성능: 선형 공정 보정만 적용 시 100~122 nm, 38-par CPE 보정을 사용한 단일 웨이퍼 재작업 후 <strong>2.8 nm (m3σ)</strong> 달성. 현재 웨이퍼 중앙의 스트라이커와 가장자리 오버레이 영향이 지배적입니다. 반경 50~130 mm 내부 영역만 고려하면 2 nm 미만(m3σ) 달성 가능합니다.</p>
+</div>
+
+<div class="transcript-block">
+<div class="transcript-time">14:56</div>
+<p>이미지 페이딩: 본딩 유발 변형 보정에 필요한 고수준 스캐너 보정이 일부 영역에서 이미지 페이딩(대비 손실)을 유발할 수 있습니다. 오버레이와 이미징 간 균형을 맞추는 새로운 스캐너 제어 인터페이스를 통해 오버레이 소폭 증가로 페이딩을 20% 감소시킬 수 있습니다.</p>
+</div>
+
+<div class="transcript-block">
+<div class="transcript-time">16:52</div>
+<p>결론: 본더 하드웨어는 스캐너 보정 능력을 초과하는 제한적인 변동만 유발합니다. 입력 웨이퍼 변동과 연삭이 변동에 미치는 영향에 대한 추가 이해가 필요합니다. 스캐너는 본딩 유발 변형을 보정할 수 있으며, 레시피 최적화로 완화 가능한 국소 오류를 제외하고 38-par CPE를 사용한 단일 웨이퍼 재작업 후 2.8 nm (m3σ) 본딩 후 오버레이 성능을 달성하였습니다. 감사합니다.</p>
+</div>
+</section>
 </body>
 </html>
